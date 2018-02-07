@@ -4,7 +4,7 @@ import sys
 lexer = lex.lex(module=lex_analysis)
 
 data = '''
-if n%2 == 0 {
+if n%2.0 == 0 {
 	println!(even)
 } else {
 	println!(odd)

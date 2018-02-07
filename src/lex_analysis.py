@@ -3,7 +3,7 @@ import ply.lex as lex
 reserved_words = ['if', 'else', 'while', 'for', 'loop', 'break', 'continue', 'let', 'fn', 'false', 'true', 'match', 'return', 'self']
 reserved = {word: word.upper() for word in reserved_words}
 
-tokens = ['ID', 'MOD', 'NUMBER', 'EQUALS', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'EQUALSEQUALS', 'GTHAN', 'LTHAN', 'GTHANEQU', 'LTHANEQU','LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'LBRACK', 'RBRACK', 'COMMENT', 'PRINTLNMAC', 'PRINTMAC', 'SPACE', 'TAB'] + list(reserved.values())
+tokens = ['ID', 'MOD', 'DECIMAL', 'NUMBER', 'EQUALS', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'EQUALSEQUALS', 'GTHAN', 'LTHAN', 'GTHANEQU', 'LTHANEQU','LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'LBRACK', 'RBRACK', 'COMMENT', 'PRINTLNMAC', 'PRINTMAC', 'SPACE', 'TAB'] + list(reserved.values())
 
 t_PLUS = r'\+'
 t_MINUS = r'-'
@@ -28,6 +28,11 @@ t_RBRACK = r'\]'
 # Ignoring spaces and tabs
 t_ignore = r'[ \t]*'
 
+def t_DECIMAL(t):
+	r'\d+\.\d+'
+	t.value = float(t.value)
+	return t
+	
 def t_NUMBER(t):
     r'\d+'
     t.value = int(t.value)    
