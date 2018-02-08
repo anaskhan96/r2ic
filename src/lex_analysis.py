@@ -3,13 +3,15 @@ import ply.lex as lex
 reserved_words = ['if', 'else', 'while', 'for', 'loop', 'break', 'continue', 'let', 'fn', 'false', 'true', 'match', 'return', 'self']
 reserved = {word: word.upper() for word in reserved_words}
 
-tokens = ['ID', 'MOD', 'DECIMAL', 'NUMBER', 'EQUALS', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'EQUALSEQUALS', 'GTHAN', 'LTHAN', 'GTHANEQU', 'LTHANEQU','LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'LBRACK', 'RBRACK', 'COMMENT', 'PRINTLNMAC', 'PRINTMAC', 'SPACE', 'TAB'] + list(reserved.values())
+tokens = ['PRINTLNMAC', 'PRINTMAC', 'NOT', 'ID', 'MOD', 'DECIMAL', 'NUMBER', 'EQUALS', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'EQUALSEQUALS', 'GTHAN', 'LTHAN', 'GTHANEQU', 'LTHANEQU','LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'LBRACK', 'RBRACK', 'COMMENT', 'SPACE', 'TAB'] + list(reserved.values())
 
+t_PRINTMAC = r'\(print!\)'
 t_PLUS = r'\+'
 t_MINUS = r'-'
 t_TIMES = r'\*'
 t_DIVIDE = r'/'
 t_MOD = r'\%'
+t_NOT = r'!'
 t_EQUALSEQUALS = r'=='
 t_GTHANEQU = r'>='
 t_LTHANEQU = r'<='
@@ -23,10 +25,10 @@ t_RBRACE = r'\}'
 t_LBRACK = r'\['
 t_RBRACK = r'\]'
 #t_PRINTLNMAC = r'(println!)'
-#t_PRINTMAC = r'(print!)'
 
 # Ignoring spaces and tabs
-t_ignore = r'[ \t]*'
+t_TAB = r'\t'
+t_SPACE = r'[ ]'
 
 def t_DECIMAL(t):
 	r'\d+\.\d+'
@@ -49,7 +51,7 @@ def t_ID(t):
 
 # Ignoring the comments and self generating docs; capturing anyway for future purposes
 def t_COMMENT(t):
-	r'(\/\/.*)|(\/\*[.\n]*.*\*\/)|(\/\/\/.*)|(\/\/\!.*)'
+	r'(\/\/\/.*)|(\/\/\!.*)|(\/\/.*)|(\/\*[.\n]*.*\*\/)'
 	pass
 
 def t_error(t):
