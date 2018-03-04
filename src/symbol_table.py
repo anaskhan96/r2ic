@@ -1,1 +1,2 @@
-#Anas please build the symbol table
+# Symbol table
+st = []

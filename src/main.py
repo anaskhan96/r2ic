@@ -1,6 +1,7 @@
 import ply.lex as lex
 import lex_analysis
 import sys
+import symbol_table
 lexer = lex.lex(module=lex_analysis)
 
 data = '''
@@ -20,6 +21,11 @@ if n%2.0 == 0 {
 lexer.input(data)
 
 for tok in lexer:
+	#print(tok.value)
 	print(tok)
+	if(tok.value in lex_analysis.reserved):
+		symbol_table.st.append(['KEYWORD',tok.value])
+	elif(tok.type == 'ID'):
+		symbol_table.st.append([tok.type, tok.value])
 
-print("Reserved words: ", lex_analysis.reserved)
+print(symbol_table.st)
