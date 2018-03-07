@@ -1,14 +1,12 @@
 class symbol_table:
-	def __init__(self, name, parent):
+	def __init__(self, name, parent): # parent is another object of the symbol_table class
 		self.symbols = {}
 		self.name = name
-		self.children = {}
+		self.children = {} # to store all scopes inside an enclosing one
 		self.parent = parent
 
-	def insert(self, symbol, token):
-		if symbol in self.symbols:
-			pass
-		else:
+	def insert(self, symbol, token): # eg. symbol = 'if', token = ['KEYWORD', 'if']
+		if symbol not in self.symbols:
 			self.symbols[symbol] = token	
 
 	def lookup(self, symbol):
@@ -17,7 +15,7 @@ class symbol_table:
 	def get_parent(self):
 		return self.parent
 
-	def put_child(self, name, child):
+	def put_child(self, name, child): # eg. name = 'if_scope_1', child = the symbol_table object of the scope
 		self.children[name] = child
 
 	def get_child(self, name):
