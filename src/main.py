@@ -19,7 +19,7 @@ if n%2.0 == 0 {
 '''
 
 lexer.input(data)
-sym_tab = symbol_table.symbol_table('sym_tab', 'global')
+sym_tab = symbol_table.symbol_table('global', 'global')
 
 for tok in lexer:
 	print(tok)
