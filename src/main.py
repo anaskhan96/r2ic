@@ -12,7 +12,6 @@ if n%2.0 == 0 {
 } else {
 	println!(odd)
 }
-
 /* Multiline Comments */
 /// Generate library docs for the following item.
 //! Generate library docs for the enclosing item.
@@ -21,7 +20,6 @@ if n%2.0 == 0 {
 lexer.input(data)
 
 for tok in lexer:
-	#print(tok.value)
 	print(tok)
 	if(tok.value in lex_analysis.reserved):
 		symbol_table.st.append(['KEYWORD',tok.value])
