@@ -21,7 +21,6 @@ if n%2.0 == 0 {
 lexer.input(data)
 
 for tok in lexer:
-	#print(tok.value)
 	print(tok)
 	if(tok.value in lex_analysis.reserved):
 		symbol_table.st.append(['KEYWORD',tok.value])
