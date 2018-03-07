@@ -4,6 +4,7 @@ import sys
 import symbol_table
 lexer = lex.lex(module=lex_analysis)
 
+enclosing_scopes = 1
 data = '''
 // Single Comment
 (print!)
@@ -18,12 +19,21 @@ if n%2.0 == 0 {
 '''
 
 lexer.input(data)
+sym_tab = symbol_table.symbol_table('sym_tab', 'global')
 
 for tok in lexer:
 	print(tok)
+	
 	if(tok.value in lex_analysis.reserved):
-		symbol_table.st.append(['KEYWORD',tok.value])
+		sym_tab.insert(tok.value, [tok.type, tok.value])
+	
 	elif(tok.type == 'ID'):
-		symbol_table.st.append([tok.type, tok.value])
+		sym_tab.insert('id', [tok.type, tok.value])
 
-print(symbol_table.st)
+	elif(tok.type == 'LBRACE'):
+		sym_tab.put_child(sym_tab.name, 'sym_tab1')
+
+	previous_token = tok
+
+# Testing
+print(sym_tab.lookup('if'))

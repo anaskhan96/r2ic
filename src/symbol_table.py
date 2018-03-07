@@ -20,4 +20,3 @@ class symbol_table:
 
 	def get_child(self, name):
 		return self.children[name]
->>>>>>> a6ed8816cfc36a6a28a4f9f4d2b8acd710e761a6
