@@ -5,7 +5,10 @@ class symbol_table:
 		self.parent = parent
 
 	def insert(self, symbol, token):
-		self.symbols[symbol] = token	
+		if symbol in self.symbols:
+			pass
+		else:
+			self.symbols[symbol] = token	
 
 	def lookup(self, symbol):
 		return self.symbols[symbol]
