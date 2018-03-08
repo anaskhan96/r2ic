@@ -1,3 +1,16 @@
+class table_stack:
+	def __init__(self):
+		self.items = []
+
+	def push(self, item):
+		self.items.append(item)
+
+	def pop(self):
+		self.items.pop()
+
+	def peek(self):
+		return self.items[len(self.items)-1]
+
 class symbol_table:
 	def __init__(self, name, parent): # parent is another object of the symbol_table class
 		self.symbols = {}
