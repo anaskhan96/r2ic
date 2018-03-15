@@ -3,7 +3,6 @@ import ply.yacc as yacc	# Parser
 import lex_analysis		# Lex File
 import sys				# Python sys
 import symbol_table		# Symbol Table File
-import re
 
 lexer = lex.lex(module=lex_analysis)
 
@@ -20,17 +19,6 @@ if n%2.0 == 0 {
 /// Generate library docs for the following item.
 //! Generate library docs for the enclosing item.
 '''
-
-def find_most_recent_scope(scope_name, symtab):
-	pattern = re.compile("{}\d+".format(scope_name))
-	key_digits = []
-	for key in symtab.children:
-		if pattern.match(key):
-			key_digits.append(int(key[-1]))
-	if len(key_digits) == 0:
-		return 0
-	else:
-		return max(key_digits)
 
 lexer.input(data)
 global_symtab = symbol_table.symbol_table("global", "global")
@@ -60,7 +48,7 @@ for tok in lexer:
 			scope_name = 'else'
 		elif 'for' in items:
 			scope_name = 'for'
-		digit = find_most_recent_scope(scope_name, symtab)
+		digit = symbol_table.find_most_recent_scope(scope_name, symtab)
 		scope_name = ''.join([scope_name, str(digit+1)])
 		new_symtab = symbol_table.symbol_table(scope_name, symtab.name)
 		stack.push(new_symtab)
@@ -70,18 +58,5 @@ for tok in lexer:
 		symtab = stack.peek()
 		symtab.put_child(child_symtab.name, child_symtab)
 
-# Testing
-'''print("\n\n\nLine#\tType\tName\tScope\t\tType")
-t = 'if'
-print(sym_tab.lookup(t)[0],\
-	"\t",sym_tab.lookup(t)[1],\
-	"\t",sym_tab.lookup(t)[2],\
-	"\t",sym_tab.lookup(t)[3],\
-	"\t\t",sym_tab.lookup(t)[4])
-
-t = 'abc'
-print(sym_tab.lookup(t)[0],\
-	"\t",sym_tab.lookup(t)[1],\
-	"\t",sym_tab.lookup(t)[2],\
-	"\t",sym_tab.lookup(t)[3],\
-	"\t\t",sym_tab.lookup(t)[4])'''
+final_sym = stack.peek()
+# pass final_sym to parser

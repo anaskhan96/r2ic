@@ -1,3 +1,5 @@
+import re
+
 class table_stack:
 	def __init__(self):
 		self.items = []
@@ -33,3 +35,14 @@ class symbol_table:
 
 	def get_child(self, name):
 		return self.children[name]
+
+def find_most_recent_scope(scope_name, symtab):
+	pattern = re.compile("{}\d+".format(scope_name))
+	key_digits = []
+	for key in symtab.children:
+		if pattern.match(key):
+			key_digits.append(int(key[-1]))
+	if len(key_digits) == 0:
+		return 0
+	else:
+		return max(key_digits)
