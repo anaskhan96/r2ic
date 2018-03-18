@@ -3,7 +3,6 @@ import ply.yacc as yacc	# Parser
 import lex_analysis		# Lex File
 import sys				# Python sys
 import symbol_table		# Symbol Table File
-import parse_analysis
 
 lexer = lex.lex(module=lex_analysis)
 
@@ -60,15 +59,4 @@ for tok in lexer:
 		symtab.put_child(child_symtab.name, child_symtab)
 
 final_sym = stack.peek()
-
-parser = yacc.yacc(module=parse_analysis)
-
-while True:
-	try:
-		s = input("calc -> ")
-	except EOFError:
-		break
-	if not s:
-		continue
-	result = parser.parse(s)
-	print(result)
+# pass final_sym to parser
