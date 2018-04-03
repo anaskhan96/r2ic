@@ -27,6 +27,9 @@ class symbol_table:
 	def lookup(self, symbol):
 		return self.symbols[symbol]
 
+	def get_name(self):
+		return self.name
+
 	def get_parent(self):
 		return self.parent
 

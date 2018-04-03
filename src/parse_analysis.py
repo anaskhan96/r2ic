@@ -33,6 +33,7 @@ def p_factor_expr(p):
 	'factor : LPAREN expression RPAREN'
 	p[0] = p[2]
 
+
 # Error rule for syntax errors
 def p_error(p):
 	print("Syntax error in input!")
