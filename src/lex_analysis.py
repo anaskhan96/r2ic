@@ -1,6 +1,6 @@
 import ply.lex as lex
 
-reserved_words = ['if', 'else', 'while', 'for', 'loop', 'print', 'break', 'continue', 'let', 'fn', 'false', 'true', 'match', 'return', 'self']
+reserved_words = ['if', 'else', 'while', 'for', 'loop', 'print', 'break', 'continue', 'let', 'fn', 'false', 'true', 'match', 'return', 'self', 'main']
 reserved = {word: word.upper() for word in reserved_words}
 
 tokens = ['PRINTLNMAC',  'PRINTMAC', 'NOT', 'ID', 'MOD', 'DECIMAL', 'NUMBER', 'EQUALS', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'EQUALSEQUALS', 'GTHAN', 'LTHAN', 'GTHANEQU', 'LTHANEQU','LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'LBRACK', 'RBRACK', 'COMMENT', 'SPACE', 'TAB'] + list(reserved.values())
