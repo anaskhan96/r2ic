@@ -1,6 +1,18 @@
 import ply.yacc as yacc
 from lex_analysis import tokens
 
+def p_program(p):
+	'program : FN MAIN LPAREN RPAREN compoundStmt'
+
+#def p_compundStmt_DeclStmt(p):
+#	'compoundStmt: LBRACE Decl Stmt RBRACE'
+
+def p_compoundStmt_Stmt(p):
+	'compoundStmt : LBRACE Stmt RBRACE'
+
+def p_Stmt(p):
+	'Stmt : expression'
+
 def p_expression_plus(p):
 	'expression : expression PLUS term'
 	p[0] = p[1] + p[3]
@@ -36,3 +48,7 @@ def p_factor_expr(p):
 # Error rule for syntax errors
 def p_error(p):
 	print("Syntax error in input!")
+
+def p_empty(p):
+	'empty :'
+	pass
