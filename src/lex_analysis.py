@@ -28,7 +28,7 @@ t_RBRACK = r'\]'
 
 # Ignoring spaces and tabs
 t_TAB = r'\t'
-t_SPACE = r'[ ]'
+t_SPACE = r'[ ]+'
 
 def t_DECIMAL(t):
 	r'\d+\.\d+'
