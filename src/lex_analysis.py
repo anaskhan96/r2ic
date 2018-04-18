@@ -8,7 +8,7 @@ tokens = ['PRINTLNMAC',  'PRINTMAC', 'NOT', 'ID', 'MOD', 'DECIMAL', 'NUMBER', 'E
 t_PRINTMAC = r'print\!'
 t_PRINTLNMAC = r'println\!'
 t_PLUS = r'\+'
-t_MINUS = r'-'
+t_MINUS = r'\-'
 t_TIMES = r'\*'
 t_DIVIDE = r'/'
 t_MOD = r'\%'
@@ -28,7 +28,7 @@ t_RBRACK = r'\]'
 
 # Ignoring spaces and tabs
 t_TAB = r'\t'
-t_SPACE = r'[ ]+'
+t_SPACE = r'[\s]+'
 
 def t_DECIMAL(t):
 	r'\d+\.\d+'
