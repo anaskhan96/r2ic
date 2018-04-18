@@ -65,7 +65,7 @@ parser = yacc.yacc(module=parse_analysis)
 
 while True:
 	try:
-		s = input("calc -> ")
+		s = input("Rust Program : ")
 	except EOFError:
 		break
 	if not s:
