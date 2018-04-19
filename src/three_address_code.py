@@ -71,9 +71,9 @@ class threeAddressCode:
 	def printTac(self):
 		for key in self.code:
 			numline = 0
-			print key + ' :\n'
+			print(key, ' :\n')
 			for line in self.code[key] :
 				if self.labels[key].has_key(numline):
-					print '\n' + self.labels[key][numline] + ' :\n'
-				print str(line[0]) + '\t' + str(line[1]) + '\t' + str(line[2]) + '\t' + str(line[3]) 
+					print('\n', self.labels[key][numline], ' :\n')
+				print(str(line[0]), '\t', str(line[1]), '\t', str(line[2]), '\t', str(line[3])) 
 				numline += 1
