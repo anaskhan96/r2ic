@@ -22,14 +22,18 @@ if n%2.0 == 0 {
 //! Generate library docs for the enclosing item.
 '''
 
-lexer.input(data)
+data2 = '''fn main() {if 1==2 {print!("Yes")}}'''
+
+lexer.input(data2)
 global_symtab = symbol_table.symbol_table("global", "global")
 stack = symbol_table.table_stack()
 stack.push(global_symtab)
 linecount, items = 0, []
 
+print(data2)
+
 for tok in lexer:
-	print(tok)
+	# print(tok)
 	if(tok.lineno == linecount):
 		items.append(tok.value)
 	else:
@@ -54,6 +58,7 @@ for tok in lexer:
 		scope_name = ''.join([scope_name, str(digit+1)])
 		new_symtab = symbol_table.symbol_table(scope_name, symtab.name)
 		stack.push(new_symtab)
+		# print("Addded new symbol table", scope_name)
 
 	elif(tok.type == 'RBRACE'):
 		child_symtab = stack.pop()
@@ -61,10 +66,13 @@ for tok in lexer:
 		symtab.put_child(child_symtab.name, child_symtab)
 
 final_sym = stack.peek()
-
 parser = yacc.yacc(module=parse_analysis)
 TAC = ThreeAddrCode.threeAddressCode(global_symtab)
+symbol_table.print_symbol_table(final_sym)
 
+
+
+'''
 while True:
 	try:
 		s = input("Rust Program : ")
@@ -73,4 +81,7 @@ while True:
 	if not s:
 		continue
 	result = parser.parse(s)
+	symbol_table.print_symbol_table(stack)
+	
 	print(result)
+'''

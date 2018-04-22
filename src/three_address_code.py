@@ -6,7 +6,7 @@ class threeAddressCode:
 		self.nextInstr = {'Main': 0}
 		self.labels = {'Main' : {}}
 
-		self.labelcount = 0;
+		self.labelcount = 0
 		self.ST = ST
 
 	# Function to print the symbol table
@@ -21,7 +21,7 @@ class threeAddressCode:
 	def incInstr(self):
 		currFunc = self.ST.curr_funcname
 		self.instr[currFunc] = self.nextInstr[currFunc]
-		self.nextInstr[currFunc] += 1 ;
+		self.nextInstr[currFunc] += 1 
 
 	# Backpatch to avoid two pass code generation
 	def backPatch(self, llist, loc):

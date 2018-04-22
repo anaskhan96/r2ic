@@ -13,6 +13,9 @@ class table_stack:
 	def peek(self):
 		return self.items[len(self.items)-1]
 
+	def get_length(self):
+		return len(self.items)
+
 class symbol_table:
 	def __init__(self, name, parent): # parent is another object of the symbol_table class
 		self.symbols = {}
@@ -26,6 +29,9 @@ class symbol_table:
 
 	def lookup(self, symbol):
 		return self.symbols[symbol]
+	
+	def get_symbols(self):
+		return (self.symbols.keys(), self.symbols.values())
 
 	def get_name(self):
 		return self.name
@@ -39,6 +45,9 @@ class symbol_table:
 	def get_child(self, name):
 		return self.children[name]
 
+	def get_children(self):
+		return self.children.keys(), 
+
 def find_most_recent_scope(scope_name, symtab):
 	pattern = re.compile("{}\d+".format(scope_name))
 	key_digits = []
@@ -49,3 +58,13 @@ def find_most_recent_scope(scope_name, symtab):
 		return 0
 	else:
 		return max(key_digits)
+
+
+def print_symbol_table(symbol_table):
+	print ("Table = ", symbol_table.get_name())
+	
+	print(symbol_table.get_symbols())
+	for i in symbol_table.get_children():
+		print_symbol_table(symbol_table.get_child(i))	
+
+		
