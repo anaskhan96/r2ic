@@ -9,12 +9,18 @@ def p_program(p):
 	p[0] = p[5]
 
 def p_compoundStmt_Stmt(p):
-	'''compoundStmt : LBRACE Stmt RBRACE
-					| LBRACE Decl RBRACE'''
+	'''compoundStmt : LBRACE Stmt moreStmt RBRACE
+					| LBRACE Decl moreStmt RBRACE'''
 	if p[1] == '{':
 		p[0] = p[2]
 	elif p[1] == 'if':
 		p[0] = p[1]
+
+def p_moreStmt(p):
+	'''moreStmt : Stmt moreStmt
+				| Decl moreStmt
+				| empty'''
+	p[0] = p[1]
 
 def p_decl_Stmt(p):
 	'''Decl : LET VarList
