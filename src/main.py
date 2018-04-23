@@ -41,10 +41,10 @@ for tok in lexer:
 		linecount+=1
 	symtab = stack.peek()
 	if(tok.value in lex_analysis.reserved):
-		symtab.insert({tok.value: None}, [tok.lineno, tok.type, tok.value, "-", "-"])
+		symtab.insert(tok.value, [tok.lineno, tok.type, tok.value, "-", "-"])
 
 	elif(tok.type == 'ID'):
-		symtab.insert(tok.value, [tok.lineno, tok.type, tok.value, "global", "-"])
+		symtab.insert({tok.value: None}, [tok.lineno, tok.type, tok.value, "global", "-"])
 
 	elif(tok.type == 'LBRACE'):
 		scope_name = ''
