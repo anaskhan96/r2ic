@@ -9,7 +9,8 @@ def p_program(p):
 	p[0] = p[5]
 
 def p_compoundStmt_Stmt(p):
-	'''compoundStmt : LBRACE Stmt RBRACE'''
+	'''compoundStmt : LBRACE Stmt RBRACE
+					| LBRACE Decl RBRACE'''
 	if p[1] == '{':
 		p[0] = p[2]
 	elif p[1] == 'if':
@@ -22,7 +23,7 @@ def p_decl_Stmt(p):
 
 def p_varlist(p):
 	'''VarList : VarList COMMA ID
-				| ID'''
+				| ID SEMICOLON'''
 	if p[2] == ',':
 		p[0] = p[3]
 	else:
@@ -75,11 +76,11 @@ def p_expression_minus(p):
 	p[0] = p[1] - p[3]
 
 def p_term_times(p):
-	'''expression : expression TIMES term'''
+	'''term : term TIMES term'''
 	p[0] = p[1] * p[3]
 
 def p_term_div(p):
-	'''expression : expression DIVIDE term'''
+	'''term : term DIVIDE term'''
 	p[0] = p[1] / p[3]
 
 def p_condition_equequ(p):
