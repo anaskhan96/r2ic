@@ -4,7 +4,7 @@ import lex_analysis		# Lex File
 import sys				# Python sys
 import symbol_table		# Symbol Table File
 import parse_analysis
-import three_address_code as ThreeAddrCode
+from parse_analysis import threeAddressCode
 
 lexer = lex.lex(module=lex_analysis)
 
@@ -41,7 +41,7 @@ for tok in lexer:
 		linecount+=1
 	symtab = stack.peek()
 	if(tok.value in lex_analysis.reserved):
-		symtab.insert(tok.value, [tok.lineno, tok.type, tok.value, "-", "-"])
+		symtab.insert({tok.value: None}, [tok.lineno, tok.type, tok.value, "-", "-"])
 
 	elif(tok.type == 'ID'):
 		symtab.insert(tok.value, [tok.lineno, tok.type, tok.value, "global", "-"])
@@ -67,8 +67,8 @@ for tok in lexer:
 
 final_sym = stack.peek()
 parser = yacc.yacc(module=parse_analysis)
-#TAC = ThreeAddrCode.threeAddressCode(global_symtab)
 final_sym.print_table()
+threeAddressCode.symbolTable = final_sym
 
 
 '''

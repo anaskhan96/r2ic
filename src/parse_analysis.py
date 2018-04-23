@@ -1,5 +1,8 @@
 import ply.yacc as yacc
 from lex_analysis import tokens
+from tac import ThreeAddressCode
+
+threeAddressCode = ThreeAddressCode()
 
 def p_program(p):
 	'''program : FN MAIN LPAREN RPAREN compoundStmt'''
@@ -46,6 +49,7 @@ def p_if_cond(p):
 def p_expression_plus(p):
 	'''expression : expression PLUS term'''
 	p[0] = p[1] + p[3]
+	threeAddressCode.generateCode('+', p[1], p[3], p[0])
 
 def p_expression_minus(p):
 	'''expression : expression MINUS term'''
