@@ -3,7 +3,7 @@ import ply.lex as lex
 reserved_words = ['if', 'else', 'while', 'for', 'loop', 'break', 'continue', 'let', 'fn', 'false', 'true', 'match', 'return', 'self', 'main']
 reserved = {word: word.upper() for word in reserved_words}
 
-tokens = ['PRINTLNMAC',  'PRINTMAC', 'NOT', 'ID', 'MOD', 'STRINGZ', 'DECIMAL', 'NUMBER', 'EQUALS', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'NOTEQUALS', 'EQUALSEQUALS', 'GTHAN', 'LTHAN', 'GTHANEQU', 'LTHANEQU','LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'LBRACK', 'RBRACK', 'COMMENT', 'SPACE', 'TAB'] + list(reserved.values())
+tokens = ['PRINTLNMAC',  'PRINTMAC', 'NOT', 'ID', 'MOD', 'STRINGZ', 'DECIMAL', 'NUMBER', 'EQUALS', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'NOTEQUALS', 'EQUALSEQUALS', 'GTHAN', 'LTHAN', 'GTHANEQU', 'LTHANEQU','LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'LBRACK', 'RBRACK', 'COMMENT', 'SPACE', 'TAB', 'SEMICOLON'] + list(reserved.values())
 
 t_PRINTLNMAC = r'println\!'
 t_PLUS = r'\+'
@@ -25,6 +25,7 @@ t_LBRACE = r'\{'
 t_RBRACE = r'\}'
 t_LBRACK = r'\['
 t_RBRACK = r'\]'
+t_SEMICOLON = r';'
 
 # Ignoring spaces and tabs
 t_TAB = r'\t'

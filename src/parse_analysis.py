@@ -13,14 +13,15 @@ def p_compoundStmt_Stmt(p):
 		p[0] = p[1]
 
 def p_Stmt(p):
-	'''Stmt : print_text
-			| expression
+	'''Stmt : print_text SEMICOLON
+			| expression SEMICOLON
 			| if
 			| if_else '''
 	p[0] = p[1]
 
 def p_print(p):
-	'''print_text : PRINTMAC LPAREN text RPAREN'''
+	'''print_text : PRINTMAC LPAREN text RPAREN
+					| PRINTLNMAC LPAREN text RPAREN'''
 	p[0] = p[3][1:-1]
 
 def p_text(p):
