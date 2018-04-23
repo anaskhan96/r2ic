@@ -59,28 +59,37 @@ def p_expression_plus(p):
 	if p[1] == ' ':
 		if p[3] == ' ':
 			if p[5] == ' ':
-				p[0] = p[2] + p[6]
+				operand1 = p[2]
+				operand2 = p[6]
 			else:
-				p[0] = p[2] + p[5]
+				operand1 = p[2]
+				operand2 = p[5]
 
 		if p[3] == '+':
 			if p[4] == ' ':
-				p[0] = p[2] + p[5]
+				operand1 = p[2]
+				operand2 = p[5]
 			else:
-				p[0] = p[2] + p[4]
+				operand1 = p[2]
+				operand2 = p[4]
 
 	else:
 		if p[2] == ' ':
 			if p[4] == ' ':
-				p[0] = p[1] + p[5]
+				operand1 = p[1]
+				operand2 = p[5]
 			else:
-				p[0] = p[1] + p[4]
+				operand1 = p[1]
+				operand2 = p[4]
 
 		if p[2] == '+':
 			if p[3] == ' ':
-				p[0] = p[1] + p[4]
+				operand1 = p[1]
+				operand2 = p[4]
 			else:
-				p[0] = p[1] + p[3]
+				operand1 = p[1]
+				operand2 = p[3]
+	p[0] = operand1 + operand2
 
 def p_expression_minus(p):
 	'''expression : expression MINUS term
@@ -94,28 +103,37 @@ def p_expression_minus(p):
 	if p[1] == ' ':
 		if p[3] == ' ':
 			if p[5] == ' ':
-				p[0] = p[2] - p[6]
+				operand1 = p[2]
+				operand2 = p[6]
 			else:
-				p[0] = p[2] - p[5]
+				operand1 = p[2]
+				operand2 = p[5]
 
 		if p[3] == '-':
 			if p[4] == ' ':
-				p[0] = p[2] - p[5]
+				operand1 = p[2]
+				operand2 = p[5]
 			else:
-				p[0] = p[2] - p[4]
+				operand1 = p[2]
+				operand2 = p[4]
 
 	else:
 		if p[2] == ' ':
 			if p[4] == ' ':
-				p[0] = p[1] - p[5]
+				operand1 = p[1]
+				operand2 = p[5]
 			else:
-				p[0] = p[1] - p[4]
+				operand1 = p[1]
+				operand2 = p[4]
 
 		if p[2] == '-':
 			if p[3] == ' ':
-				p[0] = p[1] - p[4]
+				operand1 = p[1]
+				operand2 = p[4]
 			else:
-				p[0] = p[1] - p[3]
+				operand1 = p[1]
+				operand2 = p[3]
+	p[0] = operand1 - operand2
 
 def p_term_times(p):
 	'''expression : expression TIMES term
@@ -129,28 +147,37 @@ def p_term_times(p):
 	if p[1] == ' ':
 		if p[3] == ' ':
 			if p[5] == ' ':
-				p[0] = p[2] * p[6]
+				operand1 = p[2]
+				operand2 = p[6]
 			else:
-				p[0] = p[2] * p[5]
+				operand1 = p[2]
+				operand2 = p[5]
 
 		if p[3] == '*':
 			if p[4] == ' ':
-				p[0] = p[2] * p[5]
+				operand1 = p[2]
+				operand2 = p[5]
 			else:
-				p[0] = p[2] * p[4]
+				operand1 = p[2]
+				operand2 = p[4]
 
 	else:
 		if p[2] == ' ':
 			if p[4] == ' ':
-				p[0] = p[1] * p[5]
+				operand1 = p[1]
+				operand2 = p[5]
 			else:
-				p[0] = p[1] * p[4]
+				operand1 = p[1]
+				operand2 = p[4]
 
 		if p[2] == '*':
 			if p[3] == ' ':
-				p[0] = p[1] * p[4]
+				operand1 = p[1]
+				operand2 = p[4]
 			else:
-				p[0] = p[1] * p[3]
+				operand1 = p[1]
+				operand2 = p[3]
+	p[0] = operand1 * operand2
 
 def p_term_div(p):
 	'''expression : expression DIVIDE term
@@ -164,28 +191,36 @@ def p_term_div(p):
 	if p[1] == ' ':
 		if p[3] == ' ':
 			if p[5] == ' ':
-				p[0] = p[2] / p[6]
+				operand1 = p[2]
+				operand2 = p[6]
 			else:
-				p[0] = p[2] / p[5]
+				operand1 = p[2]
+				operand2 = p[5]
 
 		if p[3] == '/':
 			if p[4] == ' ':
-				p[0] = p[2] / p[5]
+				operand1 = p[2]
+				operand2 = p[5]
 			else:
-				p[0] = p[2] / p[4]
-
+				operand1 = p[2]
+				operand2 = p[4]
 	else:
 		if p[2] == ' ':
 			if p[4] == ' ':
-				p[0] = p[1] / p[5]
+				operand1 = p[1]
+				operand2 = p[5]
 			else:
-				p[0] = p[1] / p[4]
+				operand1 = p[1]
+				operand2 = p[4]
 
 		if p[2] == '/':
 			if p[3] == ' ':
-				p[0] = p[1] / p[4]
+				operand1 = p[1]
+				operand2 = p[4]
 			else:
-				p[0] = p[1] / p[3]
+				operand1 = p[1]
+				operand2 = p[3]
+	p[0] = operand1 / operand2
 
 def p_condition_equequ(p):
 	'''condition : term EQUALSEQUALS term'''
