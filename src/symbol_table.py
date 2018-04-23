@@ -31,7 +31,7 @@ class symbol_table:
 		return self.symbols[symbol]
 	
 	def get_symbols(self):
-		return (self.symbols.keys(), self.symbols.values())
+		return self.symbols
 
 	def get_name(self):
 		return self.name
@@ -48,6 +48,15 @@ class symbol_table:
 	def get_children(self):
 		return self.children.keys()
 
+	def print_table(self):
+		print ("Table :  ", self.name)		
+		for i in self.symbols:
+			print(i , self.symbols[i])
+		print()	
+		for i in self.children:
+			self.children[i].print_table()	
+
+
 def find_most_recent_scope(scope_name, symtab):
 	pattern = re.compile("{}\d+".format(scope_name))
 	key_digits = []
@@ -59,12 +68,5 @@ def find_most_recent_scope(scope_name, symtab):
 	else:
 		return max(key_digits)
 
-
-def print_symbol_table(symbol_table):
-	print ("Table = ", symbol_table.get_name())
 	
-	print(symbol_table.get_symbols())
-	for i in symbol_table.get_children():
-		print_symbol_table(symbol_table.get_child(i))	
-
 		
