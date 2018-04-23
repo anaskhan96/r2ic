@@ -114,7 +114,8 @@ def p_term_factor(p):
 	p[0] = p[1]
 
 def p_factor_num(p):
-	'''factor : NUMBER'''
+	'''factor : NUMBER
+				| ID '''
 	p[0] = p[1]
 
 def p_factor_expr(p):

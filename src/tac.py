@@ -11,6 +11,7 @@ class ThreeAddressCode:
 
 	def print_code(self):
 		print('\n'.join([i.operation+" "+i.arg1+" "+i.arg2+" "+i.result for i in self.allCode]))
+
 class Quadruple:
 	def __init__(self, operation, arg1, arg2, result):
 		self.operation = operation
