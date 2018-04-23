@@ -79,5 +79,4 @@ while True:
 	if not s:
 		continue
 	result = parser.parse(s)
-	
 	print(result)

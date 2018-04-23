@@ -15,9 +15,28 @@ def p_compoundStmt_Stmt(p):
 	elif p[1] == 'if':
 		p[0] = p[1]
 
+def p_decl_Stmt(p):
+	'''Decl : LET VarList
+			| LET AssignExpr'''
+	p[0] = p[2]
+
+def p_varlist(p):
+	'''VarList : VarList COMMA ID
+				| ID'''
+	if p[2] == ',':
+		p[0] = p[3]
+	else:
+		p[0] = p[1]
+
+def p_assignExpr(p):
+	'''AssignExpr : ID EQUALS expression COMMA AssignExpr
+					| ID EQUALS expression SEMICOLON'''
+	p[0] = p[3]
+
 def p_Stmt(p):
 	'''Stmt : print_text SEMICOLON
 			| expression SEMICOLON
+			| AssignExpr
 			| if
 			| if_else '''
 	p[0] = p[1]
@@ -126,6 +145,7 @@ def p_factor_expr(p):
 # Error rule for syntax errors
 def p_error(p):
 	print("Syntax error in input!")
+	print(p)
 
 def p_empty(p):
 	'empty : '
