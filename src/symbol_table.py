@@ -46,7 +46,7 @@ class symbol_table:
 		return self.children[name]
 
 	def get_children(self):
-		return self.children.keys(), 
+		return self.children.keys()
 
 def find_most_recent_scope(scope_name, symtab):
 	pattern = re.compile("{}\d+".format(scope_name))
