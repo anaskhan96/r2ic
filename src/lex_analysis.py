@@ -28,7 +28,6 @@ t_RBRACK = r'\]'
 
 # Ignoring spaces and tabs
 t_TAB = r'\t'
-t_SPACE = r'[\s]+'
 
 def t_DECIMAL(t):
 	r'\d+\.\d+'
@@ -56,6 +55,10 @@ def t_ID(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
     t.type = reserved.get(t.value,'ID')    # Check for reserved words
     return t
+
+def t_SPACE(t):
+	r'[\s]+'
+	pass
 
 # Ignoring the comments and self generating docs; capturing anyway for future purposes
 def t_COMMENT(t):

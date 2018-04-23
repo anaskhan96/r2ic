@@ -67,12 +67,9 @@ for tok in lexer:
 
 final_sym = stack.peek()
 parser = yacc.yacc(module=parse_analysis)
-TAC = ThreeAddrCode.threeAddressCode(global_symtab)
-symbol_table.print_symbol_table(final_sym)
+#TAC = ThreeAddrCode.threeAddressCode(global_symtab)
+#symbol_table.print_symbol_table(final_sym)
 
-
-
-'''
 while True:
 	try:
 		s = input("Rust Program : ")
@@ -81,7 +78,6 @@ while True:
 	if not s:
 		continue
 	result = parser.parse(s)
-	symbol_table.print_symbol_table(stack)
+	#symbol_table.print_symbol_table(stack)
 	
 	print(result)
-'''
