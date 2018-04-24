@@ -1,8 +1,12 @@
+from symbol_table import table_stack
+tac_stack = table_stack()
+
 class ThreeAddressCode:
 	def __init__(self):
 		self.symbolTable = None
 		self.allCode = []
-		self.tempVarCount = 0
+		self.tempVarCount = 1
+		self.label_counter = 1
 
 	def generateCode(self, operation, arg1, arg2, result):
 		code = Quadruple(operation, arg1, arg2, result)
@@ -13,6 +17,43 @@ class ThreeAddressCode:
 		print("\tOperation\tArg1\t\tArg2\t\tResult")
 		for i in self.allCode:
 			print("\t", i.operation, "\t\t", i.arg1, "\t\t", i.arg2, "\t\t", i.result)
+
+	def generate_icg(self, operation, arg1, arg2, result):
+		if operation == '+' or operation == '-':
+			if tac_stack.get_length() == 1:
+				self.generateCode(operation, str(arg1), str(tac_stack.pop()), 't'+str(self.tempVarCount))
+				tac_stack.push('t'+str(self.tempVarCount))
+				# add 't'+str(self.tempVarCount) to symbol_table
+				self.tempVarCount += 1
+
+			elif tac_stack.get_length() > 1:
+				self.generateCode(operation, str(tac_stack.pop()), str(tac_stack.pop()), 't'+str(self.tempVarCount))
+				tac_stack.push('t'+str(self.tempVarCount))
+				# add 't'+str(self.tempVarCount) to symbol_table
+				self.tempVarCount += 1
+			else:
+				self.generateCode(operation, str(arg1), str(arg2), 't'+str(self.tempVarCount))
+				tac_stack.push('t'+str(self.tempVarCount))
+				# add 't'+str(self.tempVarCount) to symbol_table
+				self.tempVarCount += 1
+	
+		elif operation == '*' or operation == '/':
+			#print("Peek: ", tac_stack.peek(), "Length: ", tac_stack.get_length())
+			self.generateCode(operation, str(arg1), str(arg2), 't'+str(self.tempVarCount))
+			tac_stack.push('t'+str(self.tempVarCount))
+			# add 't'+str(self.tempVarCount) to symbol_table
+			self.tempVarCount += 1
+		
+		elif operation == '=':
+				self.generateCode(operation, str(tac_stack.pop()), '', result)
+				#tac_stack.push('t'+str(self.tempVarCount))
+
+		elif operation.startswith('if'):
+			self.generateCode(operation, str(arg1), str(arg2), result)
+			self.generateCode("goto", 'L'+str(self.label_counter+2), '', '')
+		
+		else:
+			print("Invalid operation")
 
 class Quadruple:
 	def __init__(self, operation, arg1, arg2, result):
