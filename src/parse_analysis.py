@@ -4,7 +4,7 @@ from tac import ThreeAddressCode
 from ast import AbstractSyntaxTree
 
 threeAddressCode = ThreeAddressCode()
-abstractSyntaxTree = AbstractSyntaxTree()
+abstractSyntaxTree = AbstractSyntaxTree('root', None, None)
 
 def p_program(p):
 	'''program : FN MAIN LPAREN RPAREN compoundStmt'''

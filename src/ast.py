@@ -1,20 +1,19 @@
 tab_val = 0
 
 class AbstractSyntaxTree:
-	def __init__(self):
-		self.value = None
-		self.left = None
-		self.right = None			
-
-	def addNode(self, value, left, right):
+	def __init__(self, value, left, right):
 		self.value = value
 		self.left = left
-		self.right = right
+		self.right = right			
+
+	def addNode(self, value, left, right):
+		return AbstractSyntaxTree(value, left, right)
 
 	def addLeaf(self, value):
-		self.value = value
+		return AbstractSyntaxTree(value, None, None)
 
 	def printAST(self):
+		global tab_val
 		print('\t'*tab_val+self.value)
 		if self.left != None:
 			tab_val += 1
