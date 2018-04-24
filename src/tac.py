@@ -45,7 +45,10 @@ class ThreeAddressCode:
 			self.tempVarCount += 1
 		
 		elif operation == '=':
-				self.generateCode(operation, str(tac_stack.pop()), '', result)
+				if tac_stack.get_length() > 0:
+					self.generateCode(operation, str(tac_stack.pop()), '', result)
+				else:
+					self.generateCode(operation, str(arg1), '', result)
 				#tac_stack.push('t'+str(self.tempVarCount))
 
 		elif operation == "goto":

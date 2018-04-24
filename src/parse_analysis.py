@@ -39,7 +39,7 @@ def p_assignExpr(p):
 	'''AssignExpr : ID EQUALS expression COMMA AssignExpr
 					| ID EQUALS expression SEMICOLON'''
 	p[0] = p[3]
-	threeAddressCode.generate_icg('=', '', '', p[1])
+	threeAddressCode.generate_icg('=', p[3], '', p[1])
 
 def p_Stmt(p):
 	'''Stmt : print_text SEMICOLON
