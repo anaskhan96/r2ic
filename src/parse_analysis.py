@@ -1,8 +1,10 @@
 import ply.yacc as yacc
 from lex_analysis import tokens
 from tac import ThreeAddressCode
+from ast import AbstractSyntaxTree
 
 threeAddressCode = ThreeAddressCode()
+abstractSyntaxTree = AbstractSyntaxTree()
 
 def p_program(p):
 	'''program : FN MAIN LPAREN RPAREN compoundStmt'''
