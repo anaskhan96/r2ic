@@ -46,7 +46,8 @@ def p_Stmt(p):
 			| expression SEMICOLON
 			| AssignExpr
 			| if
-			| if_else '''
+			| if_else
+			| loop'''
 	p[0] = p[1]
 
 def p_print(p):
@@ -72,6 +73,17 @@ def p_if_cond(p):
 	else:
 		print("Condition failed!")
 		pass
+
+def p_loop(p):
+	'''loop : WHILE condition compoundStmt putLabelResult
+			| LOOP compoundStmt putLabelResult'''
+	if p[1] == 'while':
+		if p[2] == 'True':
+			p[0] = p[3]
+		else:
+			pass
+	else:
+		p[0] = p[2]
 
 def p_expression_plus(p):
 	'''expression : expression PLUS term'''
