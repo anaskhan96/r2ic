@@ -96,12 +96,12 @@ def p_expression_minus(p):
 	threeAddressCode.generate_icg('-', p[1], p[3], p[0])
 
 def p_term_times(p):
-	'''term : term TIMES term'''
+	'''term : term TIMES factor'''
 	p[0] = p[1] * p[3]
 	threeAddressCode.generate_icg('*', p[1], p[3], p[0])
 
 def p_term_div(p):
-	'''term : term DIVIDE term'''
+	'''term : term DIVIDE factor'''
 	p[0] = p[1] / p[3]
 	threeAddressCode.generate_icg('/', p[1], p[3], p[0])
 
