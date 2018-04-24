@@ -63,10 +63,12 @@ class ThreeAddressCode:
 			for i in reversed(self.allCode):
 				if i.result.endswith("S"):
 					i.result += str(label)
+					break
 		else:
 			for i in reversed(self.allCode):
 				if i.arg1.endswith("S"):
 					i.arg1 += str(label)
+					break
 
 class Quadruple:
 	def __init__(self, operation, arg1, arg2, result):
