@@ -48,17 +48,25 @@ class ThreeAddressCode:
 				self.generateCode(operation, str(tac_stack.pop()), '', result)
 				#tac_stack.push('t'+str(self.tempVarCount))
 
+		elif operation == "goto":
+			self.generateCode(operation, arg1, arg2, result)
+
 		elif operation.endswith('F'):
 			self.generateCode(operation, str(arg1), str(arg2), result)
 		
 		else:
 			print("Invalid operation")
 
-	def putLabel(self):
+	def putLabel(self, kind):
 		label = len(self.allCode)
-		for i in reversed(self.allCode):
-			if i.result == "goto S":
-				i.result = "goto S"+str(label)
+		if kind == 'result':
+			for i in reversed(self.allCode):
+				if i.result.endswith("S"):
+					i.result += str(label)
+		else:
+			for i in reversed(self.allCode):
+				if i.arg1.endswith("S"):
+					i.arg1 += str(label)
 
 class Quadruple:
 	def __init__(self, operation, arg1, arg2, result):

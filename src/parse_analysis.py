@@ -59,14 +59,14 @@ def p_text(p):
 	p[0] = p[1]
 
 def p_if_else(p):
-	'''if_else : IF   condition   compoundStmt   ELSE putLabel compoundStmt'''
+	'''if_else : IF   condition   compoundStmt generateGoto  ELSE putLabelResult compoundStmt putLabelArg'''
 	if p[2] == "True":
 		p[0] = p[3]
 	else:
 		p[0] = p[6]
 
 def p_if_cond(p):
-	'''if : IF   condition   compoundStmt putLabel'''
+	'''if : IF   condition   compoundStmt putLabelResult'''
 	if p[2] == "True":
 		p[0] = p[3]
 	else:
@@ -158,9 +158,17 @@ def p_factor_expr(p):
 	'''factor : LPAREN expression RPAREN'''
 	p[0] = p[2]
 
-def p_putLabel(p):
-	'''putLabel : empty'''
-	threeAddressCode.putLabel()
+def p_putLabelResult(p):
+	'''putLabelResult : empty'''
+	threeAddressCode.putLabel('result')
+
+def p_putLabelArg(p):
+	'''putLabelArg : empty'''
+	threeAddressCode.putLabel('arg1')
+
+def p_generateGoto(p):
+	'''generateGoto : empty'''
+	threeAddressCode.generate_icg("goto", "S", '', '')
 
 # Error rule for syntax errors
 def p_error(p):
