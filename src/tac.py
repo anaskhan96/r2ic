@@ -6,11 +6,13 @@ class ThreeAddressCode:
 
 	def generateCode(self, operation, arg1, arg2, result):
 		code = Quadruple(operation, arg1, arg2, result)
-		code.print_quadruple()
+		#code.print_quadruple()
 		self.allCode.append(code)
 
 	def print_code(self):
-		print('\n'.join([i.operation+" "+i.arg1+" "+i.arg2+" "+i.result for i in self.allCode]))
+		print("\tOperation\tArg1\t\tArg2\t\tResult")
+		for i in self.allCode:
+			print("\t", i.operation, "\t\t", i.arg1, "\t\t", i.arg2, "\t\t", i.result)
 
 class Quadruple:
 	def __init__(self, operation, arg1, arg2, result):
