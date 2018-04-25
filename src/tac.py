@@ -1,6 +1,6 @@
 from symbol_table import table_stack
 tac_stack = table_stack()
-mult_flag = False
+mult_flag = 0
 
 class ThreeAddressCode:
 	def __init__(self):
@@ -23,9 +23,9 @@ class ThreeAddressCode:
 		global mult_flag
 		if operation == '+' or operation == '-':
 			if tac_stack.get_length() == 1:
-				if mult_flag:
+				if mult_flag == 1:
 					self.generateCode(operation, str(arg1), str(tac_stack.pop()), 't'+str(self.tempVarCount))
-					mult_flag = False
+					mult_flag -= 1
 				else:
 					self.generateCode(operation, str(arg2), str(tac_stack.pop()), 't'+str(self.tempVarCount))
 
@@ -38,7 +38,7 @@ class ThreeAddressCode:
 				tac_stack.push('t'+str(self.tempVarCount))
 				# add 't'+str(self.tempVarCount) to symbol_table
 				self.tempVarCount += 1
-				mult_flag = False
+				mult_flag -= 1
 			
 			else:
 				self.generateCode(operation, str(arg1), str(arg2), 't'+str(self.tempVarCount))
@@ -48,11 +48,47 @@ class ThreeAddressCode:
 	
 		elif operation == '*' or operation == '/':
 			#print("Peek: ", tac_stack.peek(), "Length: ", tac_stack.get_length())
-			self.generateCode(operation, str(arg1), str(arg2), 't'+str(self.tempVarCount))
-			tac_stack.push('t'+str(self.tempVarCount))
+			
+			#self.generateCode(operation, str(arg1), str(arg2), 't'+str(self.tempVarCount))
+			
+			#tac_stack.push('t'+str(self.tempVarCount))
 			# add 't'+str(self.tempVarCount) to symbol_table
-			self.tempVarCount += 1
-			mult_flag = True
+			
+			#self.tempVarCount += 1
+		
+			if tac_stack.get_length() == 1:
+				print(1)
+				if mult_flag == 2:
+					print("a")
+					self.generateCode(operation, str(arg2), str(tac_stack.pop()), 't'+str(self.tempVarCount))
+
+				elif mult_flag == 1:
+					print("a")
+					self.generateCode(operation, str(arg2), str(arg1), 't'+str(self.tempVarCount))
+				else:
+					print("b")
+					mult_flag -= 1
+					self.generateCode(operation, str(arg1), str(arg2), 't'+str(self.tempVarCount))
+
+				tac_stack.push('t'+str(self.tempVarCount))
+				# add 't'+str(self.tempVarCount) to symbol_table
+				self.tempVarCount += 1
+
+			elif tac_stack.get_length() > 1:
+				print(2)
+				self.generateCode(operation, str(tac_stack.pop()), str(tac_stack.pop()), 't'+str(self.tempVarCount))
+				tac_stack.push('t'+str(self.tempVarCount))
+				# add 't'+str(self.tempVarCount) to symbol_table
+				self.tempVarCount += 1
+				mult_flag -= 1
+			
+			else:
+				print(3)
+				self.generateCode(operation, str(arg1), str(arg2), 't'+str(self.tempVarCount))
+				tac_stack.push('t'+str(self.tempVarCount))
+				mult_flag += 1
+				# add 't'+str(self.tempVarCount) to symbol_table
+				self.tempVarCount += 1
 		
 		elif operation == '=':
 				if tac_stack.get_length() > 0:
