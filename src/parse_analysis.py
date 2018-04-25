@@ -2,6 +2,8 @@ import ply.yacc as yacc
 from lex_analysis import tokens
 from optimized_tac import ThreeAddressCode
 from ast import AbstractSyntaxTree
+import symbol_table
+
 
 threeAddressCode = ThreeAddressCode()
 abstractSyntaxTree = AbstractSyntaxTree('root', None, None)
@@ -90,14 +92,19 @@ def p_if_cond(p):
 
 def p_loop(p):
 	'''loop : WHILE condition compoundStmt putLabelResult
-			| LOOP compoundStmt putLabelResult'''
+			| LOOP compoundStmt putLabelResult
+			| FOR ID IN term ELLIPSIS term compoundStmt pulLabelResult''' 
 	if p[1] == 'while':
 		if p[2] == 'True':
 			p[0] = p[3]
 		else:
 			pass
-	else:
+	elif p[1] == 'loop':
 		p[0] = p[2]
+	else:
+		p[0] = p[7]
+	
+
 
 def p_expression_plus(p):
 	'''expression : expression PLUS term'''
