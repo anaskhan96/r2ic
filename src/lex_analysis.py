@@ -27,7 +27,7 @@ t_LBRACK = r'\['
 t_RBRACK = r'\]'
 t_SEMICOLON = r';'
 t_COMMA = r','
-t_ELLIPSIS = r'..'
+t_ELLIPSIS = r'\.\.'
 
 # Ignoring spaces and tabs
 t_TAB = r'\t'

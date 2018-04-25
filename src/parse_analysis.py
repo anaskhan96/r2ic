@@ -101,7 +101,9 @@ def p_loop(p):
 		else:
 			pass
 	elif p[1] == 'loop':
+		print('hey')
 		p[0] = p[2]
+
 	else:
 		p[0] = p[7]
 	

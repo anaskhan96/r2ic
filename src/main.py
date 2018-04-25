@@ -23,7 +23,6 @@ fn main(){
 /// Generate library docs for the following item.
 //! Generate library docs for the enclosing item.
 '''
-
 lexer.input(data)
 global_symtab = symbol_table.symbol_table("global", "global")
 stack = symbol_table.table_stack()
