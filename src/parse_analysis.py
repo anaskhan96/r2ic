@@ -69,7 +69,9 @@ def p_Stmt(p):
 def p_print(p):
 	'''print_text : PRINTMAC LPAREN text RPAREN
 					| PRINTLNMAC LPAREN text RPAREN'''
+			
 	p[0] = p[3][1:-1]
+	threeAddressCode.generate_icg('print', '', '', p[3][1:-1])
 
 def p_text(p):
 	'''text : STRINGZ '''

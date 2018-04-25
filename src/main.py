@@ -16,6 +16,7 @@ fn main(){
 	a = 3+6;
 	for x in 1..4 {
 		x = 1+4;
+		print!("hello");
 	}
 }
 /* Multiline Comments */

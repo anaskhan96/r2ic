@@ -94,6 +94,9 @@ class ThreeAddressCode:
 		elif operation.endswith('F'):
 			self.generateCode(operation, str(arg1), str(arg2), result)
 		
+		elif operation == "print":
+			self.generateCode("SWI 0X02", '', '', result.strip())
+		
 		else:
 			print("Invalid operation")
 
@@ -104,12 +107,19 @@ class ThreeAddressCode:
 				if i.result.endswith("S"):
 					i.result += str(label)
 					break
-		else:
+		
+		elif kind == 'arg1':
 			for i in reversed(self.allCode):
 				if i.arg1.endswith("S"):
 					i.arg1 += str(label)
 					break
-
+		else:
+			allCodeReverse = self.allCode[::-1]
+			for i in range(len(allCodeReverse)):
+				if allCodeReverse[i].result.endswith("S"):
+					self.generate_icg("goto", "S"+str(label-i-1), '', '')
+					break
+		
 class Quadruple:
 	def __init__(self, operation, arg1, arg2, result):
 		self.operation = operation
