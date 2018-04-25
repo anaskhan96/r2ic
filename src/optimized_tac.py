@@ -99,10 +99,16 @@ class ThreeAddressCode:
 				if i.result.endswith("S"):
 					i.result += str(label)
 					break
-		else:
+		elif kind == 'arg1':
 			for i in reversed(self.allCode):
 				if i.arg1.endswith("S"):
 					i.arg1 += str(label)
+					break
+		else:
+			allCodeReverse = self.allCode[::-1]
+			for i in range(len(allCodeReverse)):
+				if allCodeReverse[i].result.endswith("S"):
+					self.generate_icg("goto", "S"+str(label-i-1), '', '')
 					break
 
 class Quadruple:
