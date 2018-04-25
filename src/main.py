@@ -12,27 +12,23 @@ lexer = lex.lex(module=lex_analysis)
 
 data = '''
 // Single Comment
-(print!)
-let abc = 10
-if n%2.0 == 0 {
-	println!(even)
-} else {
-	println!(odd)
+fn main(){
+	if 1==1 {
+		let a = 45 + 20;
+	} else {
+		let b = 34 + 12;
+	}
 }
 /* Multiline Comments */
 /// Generate library docs for the following item.
 //! Generate library docs for the enclosing item.
 '''
 
-data2 = '''fn main() {if 1==2 {print!("Yes")}}'''
-
-lexer.input(data2)
+lexer.input(data)
 global_symtab = symbol_table.symbol_table("global", "global")
 stack = symbol_table.table_stack()
 stack.push(global_symtab)
 linecount, items = 0, []
-
-print(data2)
 
 for tok in lexer:
 	# print(tok)
@@ -43,10 +39,10 @@ for tok in lexer:
 		linecount+=1
 	symtab = stack.peek()
 	if(tok.value in lex_analysis.reserved):
-		symtab.insert(tok.value, [tok.lineno, tok.type, tok.value, "-", "-"])
+		symtab.insert(tok.value, [tok.lineno, tok.type, "reserved", "-", "-"])
 
 	elif(tok.type == 'ID'):
-		symtab.insert({tok.value: None}, [tok.lineno, tok.type, tok.value, "global", "-"])
+		symtab.insert(tok.value, [tok.lineno, tok.type, '~', "global", "-"])
 
 	elif(tok.type == 'LBRACE'):
 		scope_name = ''
@@ -69,20 +65,9 @@ for tok in lexer:
 
 final_sym = stack.peek()
 parser = yacc.yacc(module=parse_analysis)
-# final_sym.print_table()
+final_sym.print_table()
 threeAddressCode.symbolTable = final_sym
-
-
-while True:
-	try:
-		s = input("Rust Program : ")
-	except EOFError:
-		break
-	if not s:
-		continue
-	result = parser.parse(s)
-	print(result)
-	# Only for testing:
-	threeAddressCode.print_code()
-	abstractSyntaxTree.printAST()
-	#print(threeAddressCode.temp_symbol_table)
+result = parser.parse(data)
+print(result)
+threeAddressCode.print_code()
+abstractSyntaxTree.printAST()
