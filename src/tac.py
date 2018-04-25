@@ -1,5 +1,6 @@
 from symbol_table import table_stack
 tac_stack = table_stack()
+mult_flag = False
 
 class ThreeAddressCode:
 	def __init__(self):
@@ -19,9 +20,15 @@ class ThreeAddressCode:
 			print("\t", i.operation, "\t\t", i.arg1, "\t\t", i.arg2, "\t\t", i.result)
 
 	def generate_icg(self, operation, arg1, arg2, result):
+		global mult_flag
 		if operation == '+' or operation == '-':
 			if tac_stack.get_length() == 1:
-				self.generateCode(operation, str(arg1), str(tac_stack.pop()), 't'+str(self.tempVarCount))
+				if mult_flag:
+					self.generateCode(operation, str(arg1), str(tac_stack.pop()), 't'+str(self.tempVarCount))
+					mult_flag = False
+				else:
+					self.generateCode(operation, str(arg2), str(tac_stack.pop()), 't'+str(self.tempVarCount))
+
 				tac_stack.push('t'+str(self.tempVarCount))
 				# add 't'+str(self.tempVarCount) to symbol_table
 				self.tempVarCount += 1
@@ -31,6 +38,8 @@ class ThreeAddressCode:
 				tac_stack.push('t'+str(self.tempVarCount))
 				# add 't'+str(self.tempVarCount) to symbol_table
 				self.tempVarCount += 1
+				mult_flag = False
+			
 			else:
 				self.generateCode(operation, str(arg1), str(arg2), 't'+str(self.tempVarCount))
 				tac_stack.push('t'+str(self.tempVarCount))
@@ -43,6 +52,7 @@ class ThreeAddressCode:
 			tac_stack.push('t'+str(self.tempVarCount))
 			# add 't'+str(self.tempVarCount) to symbol_table
 			self.tempVarCount += 1
+			mult_flag = True
 		
 		elif operation == '=':
 				if tac_stack.get_length() > 0:
