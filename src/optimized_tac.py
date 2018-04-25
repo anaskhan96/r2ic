@@ -2,6 +2,8 @@ from symbol_table import table_stack
 tac_stack = table_stack()
 mult_flag = 0
 
+ad_hoc_constant_prop = {}
+
 class ThreeAddressCode:
 	def __init__(self):
 		self.symbolTable = None
@@ -21,6 +23,7 @@ class ThreeAddressCode:
 			print("\t", i.operation, "\t\t", i.arg1, "\t\t", i.arg2, "\t\t", i.result)
 
 	def generate_icg(self, operation, arg1, arg2, result):
+		global ad_hoc_constant_prop
 		global mult_flag
 		if operation == '+' or operation == '-':
 			if tac_stack.get_length() == 1:
@@ -47,7 +50,7 @@ class ThreeAddressCode:
 			if tac_stack.get_length() == 1:
 				if not mult_flag == 1:
 					mult_flag -= 1
-					
+
 				tac_stack.push('t'+str(self.tempVarCount))
 				self.temp_symbol_table[self.tempVarCount] = result
 				self.tempVarCount += 1
@@ -69,8 +72,16 @@ class ThreeAddressCode:
 		elif operation == '=':
 				if tac_stack.get_length() > 0:
 					self.generateCode(operation, str(self.temp_symbol_table[len(self.temp_symbol_table)]), '', result)
+					while tac_stack.get_length() > 0:
+						tac_stack.pop()
+					ad_hoc_constant_prop[result] = str(self.temp_symbol_table[len(self.temp_symbol_table)])
+
 				else:
-					self.generateCode(operation, str(arg1), '', result)
+					if(str(arg1) in ad_hoc_constant_prop.keys()):
+						self.generateCode(operation, ad_hoc_constant_prop[str(arg1)], '', result)
+					else:
+						self.generateCode(operation, str(arg1), '', result)
+						ad_hoc_constant_prop[result] = str(arg1)
 
 		elif operation == "goto":
 			self.generateCode(operation, arg1, arg2, result)
