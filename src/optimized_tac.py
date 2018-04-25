@@ -1,6 +1,7 @@
 from symbol_table import table_stack
 tac_stack = table_stack()
 mult_flag = 0
+loop_values = []
 
 ad_hoc_constant_prop = {}
 

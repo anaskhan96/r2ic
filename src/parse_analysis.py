@@ -77,7 +77,7 @@ def p_print(p):
 	'''print_text : PRINTMAC LPAREN text RPAREN
 					| PRINTLNMAC LPAREN text RPAREN'''
 	p[0] = p[3][1:-1]
-
+	threeAddressCode.generate_icg("print", "","", p[3][1:-1])
 def p_text(p):
 	'''text : STRINGZ '''
 	p[0] = p[1]
@@ -100,19 +100,24 @@ def p_if_cond(p):
 def p_loop(p):
 	'''loop : WHILE setScopeNameWhile condition compoundStmt generateGotoLoop putLabelResult
 			| LOOP setScopeNameLoop compoundStmt generateGotoLoop putLabelResult
-			| FOR setScopeNameFor ID IN term ELLIPSIS term compoundStmt putLabelResult''' 
+			| FOR setScopeNameFor ID IN ellipsis compoundStmt putLabelResult loopEnd''' 
 	if p[1] == 'while':
 		if p[2] == 'True':
 			p[0] = p[3]
 		else:
 			pass
 	elif p[1] == 'loop':
-		print('hey')
 		p[0] = p[2]
 
 	else:
-		p[0] = p[7]
+		p[0] = p[5]
 
+
+def p_ellipsis(p):
+	'''ellipsis : term DOTDOT term '''
+	threeAddressCode.loop_begin()
+	threeAddressCode.generate_icg("FOR",p[1], p[3], "goto S")
+	
 def p_expression_plus(p):
 	'''expression : expression PLUS term'''
 	flag = True
@@ -268,6 +273,11 @@ def p_setScopeNameFor(p):
 	global scope_name
 	scopes['for'] += 1
 	scope_name = 'for'+str(scopes['for']) 
+
+def p_loopEnd(p):
+	'''loopEnd :  empty'''
+	threeAddressCode.loop_end()
+	threeAddressCode.generate_icg("loop-end", "","","")
 
 def p_tablePush(p):
 	'''tablePush : empty'''

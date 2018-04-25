@@ -1,8 +1,19 @@
+
 class ThreeAddressCode:
 	def __init__(self):
 		self.symbolTable = None
 		self.allCode = []
 		self.tempVarCount = 0
+		self.loop_statement_count = 0
+		self.loop_status = ''
+		self.loop_unroll = False
+		self.loop_values = []
+	
+	def loop_begin(self):
+		self.loop_status = 'begin'
+
+	def loop_end(self):
+		self.loop_status = 'end'
 
 	def generateCode(self, operation, arg1, arg2, result):
 		code = Quadruple(operation, arg1, arg2, result)
@@ -14,8 +25,13 @@ class ThreeAddressCode:
 			print("\t", i.operation, "\t\t", i.arg1, "\t\t", i.arg2, "\t\t", i.result)
 
 	def generate_icg(self, operation, arg1, arg2, result):
+		if self.loop_status =='begin':
+			self.loop_statement_count +=1
+
 		if operation == "goto":
 			self.generateCode(operation, arg1, arg2, result)
+		elif operation == 'print':
+			self.generateCode("SWI", '', '', result)
 		elif operation.endswith("F"):
 			self.generateCode(operation, str(arg1), str(arg2), result)
 		elif operation == "=":
@@ -36,7 +52,7 @@ class ThreeAddressCode:
 				value = self.symbolTable.lookup(result)
 				value[2] = arg1
 				self.symbolTable.symbols[result] = value
-		else:
+		elif operation in ["+", "-"	, "*", "/"]:
 			# operation is either +,-,*,/
 			if type(arg1) == int and type(arg2) == int:
 				self.tempVarCount += 1
@@ -47,6 +63,31 @@ class ThreeAddressCode:
 				temp = 't'+str(self.tempVarCount)
 				self.generateCode(operation, arg1, arg2, temp)
 				self.symbolTable.insert(temp, [0, 'ID', '~', "global", "-"])
+		
+		elif operation == 'FOR':
+			if (int(arg2) - int(arg1) > 10 ):
+				self.generateCode(operation, arg1, arg2, result)
+			else:
+				self.loop_values.append(int(arg1))
+				self.loop_values.append(int(arg2))
+				self.loop_unroll = True
+
+		elif operation == 'loop-end' and self.loop_unroll:
+			op =[]
+			temp = []
+			for i in range(self.loop_statement_count -2):
+				op.append(self.allCode.pop())
+			for i in range(self.loop_values[0], self.loop_values[1]):
+				for j in op[::-1]:
+					if(j.operation != '='):
+					
+						self.allCode.append(j)
+					else:
+						temp.append(j)
+			self.allCode += list(set(temp)) 
+			self.loop_values = []
+			self.loop_status = ''
+			self.loop_unroll = False
 
 	def putLabel(self, kind):
 		label = len(self.allCode)

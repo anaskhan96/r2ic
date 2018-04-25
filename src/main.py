@@ -14,10 +14,12 @@ data = '''
 // Single Comment
 fn main(){
 	let a = 3 + 4 * 9;
-	while a < 2 {
-		let a = 5 + 6;
+	for x in 1..6 {
+	print!("hello");	
+	print!("world");
+	let b = 3+5;
+	
 	}
-	let b = c + 4 * 5;
 }
 /* Multiline Comments */
 /// Generate library docs for the following item.
