@@ -107,7 +107,7 @@ def p_loop(p):
 def p_ellipsis(p):
 	'''ellipsis : term DOTDOT term '''
 	threeAddressCode.loop_begin()
-	threeAddressCode.generate_icg("FOR",p[1], p[3], "goto S")
+	threeAddressCode.generate_icg("FOR",p[1][0], p[3][0], "goto S")
 	
 def p_expression_plus(p):
 	'''expression : expression PLUS term'''
