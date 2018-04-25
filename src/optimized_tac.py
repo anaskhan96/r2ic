@@ -86,6 +86,9 @@ class ThreeAddressCode:
 		elif operation == "goto":
 			self.generateCode(operation, arg1, arg2, result)
 
+		elif operation == "FOR":
+			self.generateCode(operation, arg1, arg2, result)
+
 		elif operation.endswith('F'):
 			self.generateCode(operation, str(arg1), str(arg2), result)
 		
@@ -110,6 +113,7 @@ class ThreeAddressCode:
 				if allCodeReverse[i].result.endswith("S"):
 					self.generate_icg("goto", "S"+str(label-i-1), '', '')
 					break
+		
 
 class Quadruple:
 	def __init__(self, operation, arg1, arg2, result):

@@ -13,14 +13,10 @@ lexer = lex.lex(module=lex_analysis)
 data = '''
 // Single Comment
 fn main(){
-	let a = 10;
-	let t = 56;
-	while 1 < 10 {
-		b = 5+6;
-		c = 3+4;
-		f = 4*5*6;
+	a = 3+6;
+	for x in 1..4 {
+		x = 1+4;
 	}
-	d = 3+4;
 }
 /* Multiline Comments */
 /// Generate library docs for the following item.
@@ -67,9 +63,9 @@ for tok in lexer:
 
 final_sym = stack.peek()
 parser = yacc.yacc(module=parse_analysis)
-final_sym.print_table()
+# final_sym.print_table()
 threeAddressCode.symbolTable = final_sym
 result = parser.parse(data)
-print(result)
+# print(result)
 threeAddressCode.print_code()
 abstractSyntaxTree.printAST()

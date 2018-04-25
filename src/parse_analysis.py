@@ -86,6 +86,7 @@ def p_if_cond(p):
 	'''if : IF   condition   compoundStmt putLabelResult'''
 	if p[2] == "True":
 		p[0] = p[3]
+
 	else:
 		print("Condition failed!")
 		pass
@@ -93,22 +94,24 @@ def p_if_cond(p):
 def p_loop(p):
 	'''loop : WHILE condition compoundStmt generateGotoLoop putLabelResult
 			| LOOP compoundStmt generateGotoLoop putLabelResult
-			| FOR ID IN term ELLIPSIS term compoundStmt putLabelResult''' 
+			| FOR ID IN ellipsis compoundStmt generateGotoLoop putLabelResult''' 
 	
 	if p[1] == 'while':
 		if p[2] == 'True':
 			p[0] = p[3]
 		else:
 			pass
+	
 	elif p[1] == 'loop':
-		print('hey')
 		p[0] = p[2]
 
 	else:
-		p[0] = p[7]
+		p[0] = p[7]	
+
+def p_ellipsis(p):
+	'''ellipsis : term DOTDOT term'''
+	threeAddressCode.generate_icg("FOR", p[1], p[3], "goto S")
 	
-
-
 def p_expression_plus(p):
 	'''expression : expression PLUS term'''
 	p[0] = p[1] + p[3]

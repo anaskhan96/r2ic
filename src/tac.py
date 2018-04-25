@@ -60,7 +60,7 @@ class ThreeAddressCode:
 				if mult_flag == 1:
 					self.generateCode(operation, str(arg2), str(tac_stack.pop()), 't'+str(self.tempVarCount))
 				else:
-					mult_flag -= 
+					mult_flag -= 1
 					self.generateCode(operation, str(arg1), str(arg2), 't'+str(self.tempVarCount))
 
 				tac_stack.push('t'+str(self.tempVarCount))
