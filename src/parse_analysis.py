@@ -7,14 +7,21 @@ import symbol_table
 
 threeAddressCode = ThreeAddressCode()
 abstractSyntaxTree = AbstractSyntaxTree('root', None, None)
+symbolTable = symbol_table.symbol_table('global', 'global')
+scope_name = "1"
+scopes = {'if':0, 'else': 0, 'while': 0, 'for':0, 'loop':0} 
+
+def initSymbolTable(st):
+	global symbolTable
+	symbolTable = st
 
 def p_program(p):
 	'''program : FN MAIN LPAREN RPAREN compoundStmt'''
 	p[0] = p[5]
 
 def p_compoundStmt_Stmt(p):
-	'''compoundStmt : LBRACE Stmt moreStmt RBRACE
-					| LBRACE Decl moreStmt RBRACE'''
+	'''compoundStmt : LBRACE tablePush Stmt moreStmt tablePop RBRACE
+					| LBRACE tablePush Decl moreStmt tablePop RBRACE'''
 	if p[1] == '{':
 		p[0] = p[2]
 	elif p[1] == 'if':
@@ -76,14 +83,14 @@ def p_text(p):
 	p[0] = p[1]
 
 def p_if_else(p):
-	'''if_else : IF   condition   compoundStmt generateGoto  ELSE putLabelResult compoundStmt putLabelArg'''
+	'''if_else : IF setScopeNameIf condition   compoundStmt generateGoto  ELSE setScopeNameElse putLabelResult compoundStmt putLabelArg'''
 	if p[2] == "True":
 		p[0] = p[3]
 	else:
 		p[0] = p[6]
 
 def p_if_cond(p):
-	'''if : IF   condition   compoundStmt putLabelResult'''
+	'''if : IF setScopeNameIf condition   compoundStmt putLabelResult'''
 	if p[2] == "True":
 		p[0] = p[3]
 	else:
@@ -91,9 +98,9 @@ def p_if_cond(p):
 		pass
 
 def p_loop(p):
-	'''loop : WHILE condition compoundStmt generateGotoLoop putLabelResult
-			| LOOP compoundStmt generateGotoLoop putLabelResult
-			| FOR ID IN term ELLIPSIS term compoundStmt putLabelResult''' 
+	'''loop : WHILE setScopeNameWhile condition compoundStmt generateGotoLoop putLabelResult
+			| LOOP setScopeNameLoop compoundStmt generateGotoLoop putLabelResult
+			| FOR setScopeNameFor ID IN term ELLIPSIS term compoundStmt putLabelResult''' 
 	
 	if p[1] == 'while':
 		if p[2] == 'True':
@@ -209,6 +216,51 @@ def p_generateGoto(p):
 def p_generateGotoLoop(p):
 	'''generateGotoLoop : empty'''
 	threeAddressCode.putLabel('loop')
+
+def p_setScopeNameIf(p):
+	'''setScopeNameIf : empty'''
+	global scopes
+	global scope_name
+	scopes['if'] += 1
+	scope_name = 'if'+str(scopes['if']) 
+
+def p_setScopeNameElse(p):
+	'''setScopeNameElse : empty'''
+	global scopes
+	global scope_name
+	scopes['else'] += 1
+	scope_name = 'else'+str(scopes['else'])
+
+def p_setScopeNameWhile(p):
+	'''setScopeNameWhile : empty'''
+	global scopes
+	global scope_name
+	scopes['while'] += 1
+	scope_name = 'while'+str(scopes['while'])
+
+def p_setScopeNameLoop(p):
+	'''setScopeNameLoop : empty'''
+	global scopes
+	global scope_name
+	scopes['loop'] += 1
+	scope_name = 'loop'+str(scopes['loop']) 
+
+def p_setScopeNameFor(p):
+	'''setScopeNameFor : empty'''
+	global scopes
+	global scope_name
+	scopes['for'] += 1
+	scope_name = 'for'+str(scopes['for']) 
+
+def p_tablePush(p):
+	'''tablePush : empty'''
+	global symbolTable
+	symbolTable = symbolTable.get_child(scope_name)
+
+def p_tablePop(p):
+	'''tablePop : empty'''
+	global symbolTable
+	symbolTable = symbolTable.get_parent()
 
 # Error rule for syntax errors
 def p_error(p):

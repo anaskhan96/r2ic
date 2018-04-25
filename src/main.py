@@ -20,6 +20,9 @@ fn main(){
 		c = 3+4;
 		f = 4*5*6;
 	}
+	while 1 < 20 {
+		e = 3+5;
+	}
 	d = 3+4;
 }
 /* Multiline Comments */
@@ -54,9 +57,13 @@ for tok in lexer:
 			scope_name = 'else'
 		elif 'for' in items:
 			scope_name = 'for'
+		elif 'while' in items:
+			scope_name = 'while'
+		elif 'loop' in items:
+			scope_name = 'loop'
 		digit = symbol_table.find_most_recent_scope(scope_name, symtab)
 		scope_name = ''.join([scope_name, str(digit+1)])
-		new_symtab = symbol_table.symbol_table(scope_name, symtab.name)
+		new_symtab = symbol_table.symbol_table(scope_name, symtab)
 		stack.push(new_symtab)
 		# print("Addded new symbol table", scope_name)
 
@@ -69,6 +76,7 @@ final_sym = stack.peek()
 parser = yacc.yacc(module=parse_analysis)
 final_sym.print_table()
 threeAddressCode.symbolTable = final_sym
+parse_analysis.initSymbolTable(final_sym)
 result = parser.parse(data)
 print(result)
 threeAddressCode.print_code()
