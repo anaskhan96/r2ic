@@ -1,9 +1,8 @@
 import ply.yacc as yacc
 from lex_analysis import tokens
-from optimized_tac import ThreeAddressCode
+from code import ThreeAddressCode
 from ast import AbstractSyntaxTree
 import symbol_table
-
 
 threeAddressCode = ThreeAddressCode()
 abstractSyntaxTree = AbstractSyntaxTree('root', None, None)
@@ -14,6 +13,7 @@ scopes = {'if':0, 'else': 0, 'while': 0, 'for':0, 'loop':0}
 def initSymbolTable(st):
 	global symbolTable
 	symbolTable = st
+	threeAddressCode.symbolTable = symbolTable
 
 def p_program(p):
 	'''program : FN MAIN LPAREN RPAREN compoundStmt'''
@@ -101,7 +101,6 @@ def p_loop(p):
 	'''loop : WHILE setScopeNameWhile condition compoundStmt generateGotoLoop putLabelResult
 			| LOOP setScopeNameLoop compoundStmt generateGotoLoop putLabelResult
 			| FOR setScopeNameFor ID IN term ELLIPSIS term compoundStmt putLabelResult''' 
-	
 	if p[1] == 'while':
 		if p[2] == 'True':
 			p[0] = p[3]
@@ -113,76 +112,94 @@ def p_loop(p):
 
 	else:
 		p[0] = p[7]
-	
-
 
 def p_expression_plus(p):
 	'''expression : expression PLUS term'''
-	p[0] = p[1] + p[3]
+	flag = True
+	if type(p[1]) == int and type(p[3]) == int:
+		flag = False
+		p[0] = p[1] + p[3]
 	threeAddressCode.generate_icg('+', p[1], p[3], p[0])
+	if flag:
+		p[0] = threeAddressCode.getLatestTemp()
 
 def p_expression_minus(p):
 	'''expression : expression MINUS term'''
-	p[0] = p[1] - p[3]
+	flag = True
+	if type(p[1]) == int and type(p[3]) == int:
+		flag = False
+		p[0] = p[1] - p[3]
 	threeAddressCode.generate_icg('-', p[1], p[3], p[0])
+	if flag:
+		p[0] = threeAddressCode.getLatestTemp()
 
 def p_term_times(p):
 	'''term : term TIMES factor'''
-	p[0] = p[1] * p[3]
+	flag = True
+	if type(p[1]) == int and type(p[3]) == int:
+		flag = False
+		p[0] = p[1] * p[3]
 	threeAddressCode.generate_icg('*', p[1], p[3], p[0])
+	if flag:
+		p[0] = threeAddressCode.getLatestTemp()
 
 def p_term_div(p):
 	'''term : term DIVIDE factor'''
-	p[0] = p[1] / p[3]
+	flag = True
+	if type(p[1]) == int and type(p[3]) == int:
+		flag = False
+		p[0] = p[1] / p[3]
 	threeAddressCode.generate_icg('/', p[1], p[3], p[0])
+	if flag:
+		p[0] = threeAddressCode.getLatestTemp()
 
 def p_condition_equequ(p):
 	'''condition : term EQUALSEQUALS term'''
 	threeAddressCode.generate_icg("==F", p[1], p[3], "goto S")
-	if p[1] == p[3]:
-		p[0] = "True"
-	else:
-		p[0] = "False"
+	#if p[1] == p[3]:
+	#	p[0] = "True"
+	#else:
+	#	p[0] = "False"
 
 def p_condition_notequ(p):
 	'''condition : term NOTEQUALS term'''
 	threeAddressCode.generate_icg("!=F", p[1], p[3], "goto S")
-	if not p[1] == p[3]:
-		p[0] = "True"
-	else:
-		p[0] = "False"
+	#if not p[1] == p[3]:
+	#	p[0] = "True"
+	#else:
+	#	p[0] = "False"
 
 def p_condition_gthanequ(p):
 	'''condition : term GTHANEQU term'''
 	threeAddressCode.generate_icg(">=F", p[1], p[3], "goto S")
-	if p[1] >= p[3]:
-		p[0] = "True"
-	else:
-		p[0] = "False"
+	#if p[1] >= p[3]:
+	#	p[0] = "True"
+	#else:
+	#	p[0] = "False"
 
 def p_condition_lthanequ(p):
 	'''condition : term LTHANEQU term'''
 	threeAddressCode.generate_icg("<=F", p[1], p[3], "goto S")
-	if p[1] <= p[3]:
-		p[0] = "True"
-	else:
-		p[0] = "False"
+	#if p[1] <= p[3]:
+	#	p[0] = "True"
+	#else:
+	#	p[0] = "False"
 
 def p_condition_lthan(p):
 	'''condition : term GTHAN term'''
 	threeAddressCode.generate_icg(">F", p[1], p[3], "goto S")
-	if p[1] > p[3]:
-		p[0] = "True"
-	else:
-		p[0] = "False"
+	#if p[1] > p[3]:
+	#	p[0] = "True"
+	#else:
+	#	p[0] = "False"
 
 def p_condition_gthan(p):
 	'''condition : term LTHAN term'''
 	threeAddressCode.generate_icg("<F", p[1], p[3], "goto S")
-	if p[1] < p[3]:
-		p[0] = "True"
-	else:
-		p[0] = "False"
+	#if p[1] < p[3]:
+	#	p[0] = "True"
+	#else:
+	#	p[0] = "False"
 
 def p_expression_term(p):
 	'expression : term'
@@ -256,11 +273,13 @@ def p_tablePush(p):
 	'''tablePush : empty'''
 	global symbolTable
 	symbolTable = symbolTable.get_child(scope_name)
+	threeAddressCode.symbolTable = symbolTable
 
 def p_tablePop(p):
 	'''tablePop : empty'''
 	global symbolTable
 	symbolTable = symbolTable.get_parent()
+	threeAddressCode.symbolTable = symbolTable
 
 # Error rule for syntax errors
 def p_error(p):

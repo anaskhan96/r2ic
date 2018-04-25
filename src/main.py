@@ -13,17 +13,11 @@ lexer = lex.lex(module=lex_analysis)
 data = '''
 // Single Comment
 fn main(){
-	let a = 10;
-	let t = 56;
-	while 1 < 10 {
-		b = 5+6;
-		c = 3+4;
-		f = 4*5*6;
+	let a = 3 + 4 * 9;
+	while a < 2 {
+		let a = 5 + 6;
 	}
-	while 1 < 20 {
-		e = 3+5;
-	}
-	d = 3+4;
+	let b = c + 4 * 5;
 }
 /* Multiline Comments */
 /// Generate library docs for the following item.
