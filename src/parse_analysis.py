@@ -93,7 +93,8 @@ def p_if_cond(p):
 def p_loop(p):
 	'''loop : WHILE condition compoundStmt putLabelResult
 			| LOOP compoundStmt putLabelResult
-			| FOR ID IN term ELLIPSIS term compoundStmt pulLabelResult''' 
+			| FOR ID IN term ELLIPSIS term compoundStmt putLabelResult''' 
+	
 	if p[1] == 'while':
 		if p[2] == 'True':
 			p[0] = p[3]
