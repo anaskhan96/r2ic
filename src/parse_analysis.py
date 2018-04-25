@@ -40,6 +40,18 @@ def p_varlist(p):
 def p_assignExpr(p):
 	'''AssignExpr : ID EQUALS expression COMMA AssignExpr
 					| ID EQUALS expression SEMICOLON'''
+	
+	'''CAN ONLY BE DONE IF THE VARIABLES ARE ADDED TO SYMBOL TABLE:
+
+					| ID EQUALS ID SEMICOLON
+					| ID EQUALS ID PLUS expression SEMICOLON
+					| ID EQUALS ID MINUS expression SEMICOLON'''
+	#if p[4] = '+':
+	#	p[0] = threeAddressCode.get_value(p[3]) + p[5]
+	#elif p[4] = '-':
+	#	p[0] = threeAddressCode.get_value(p[3]) + p[5]
+	#elif p[4] = '+':
+	#	p[0] = threeAddressCode.get_value(p[3]) + p[5]
 	p[0] = p[3]
 	threeAddressCode.generate_icg('=', p[3], '', p[1])
 
