@@ -21,6 +21,11 @@ fn main(){
 	let f  = d + a;
 	
 	}
+	while a < 2 {
+		let a = 5;
+	}
+	let b = 2 + c + 5 * 2;
+	let d = a;
 }
 /* Multiline Comments */
 /// Generate library docs for the following item.

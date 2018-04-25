@@ -6,15 +6,9 @@ class AbstractSyntaxTree:
 		self.left = left
 		self.right = right			
 
-	def addNode(self, value, left, right):
-		return AbstractSyntaxTree(value, left, right)
-
-	def addLeaf(self, value):
-		return AbstractSyntaxTree(value, None, None)
-
 	def printAST(self):
 		global tab_val
-		print('\t'*tab_val+self.value)
+		print('\t'*tab_val, self.value)
 		if self.left != None:
 			tab_val += 1
 			self.left.printAST()
@@ -23,3 +17,9 @@ class AbstractSyntaxTree:
 			tab_val += 1
 			self.right.printAST()
 			tab_val -= 1
+
+def newNode(value, left, right):
+	return AbstractSyntaxTree(value, left, right)
+
+def newLeaf(value):
+	return AbstractSyntaxTree(value, None, None)

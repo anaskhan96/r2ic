@@ -3,6 +3,7 @@ from lex_analysis import tokens
 from code import ThreeAddressCode
 from ast import AbstractSyntaxTree
 import symbol_table
+import ast
 
 threeAddressCode = ThreeAddressCode()
 abstractSyntaxTree = AbstractSyntaxTree('root', None, None)
@@ -49,20 +50,10 @@ def p_varlist(p):
 def p_assignExpr(p):
 	'''AssignExpr : ID EQUALS expression COMMA AssignExpr
 					| ID EQUALS expression SEMICOLON'''
-	
-	'''CAN ONLY BE DONE IF THE VARIABLES ARE ADDED TO SYMBOL TABLE:
-
-					| ID EQUALS ID SEMICOLON
-					| ID EQUALS ID PLUS expression SEMICOLON
-					| ID EQUALS ID MINUS expression SEMICOLON'''
-	#if p[4] = '+':
-	#	p[0] = threeAddressCode.get_value(p[3]) + p[5]
-	#elif p[4] = '-':
-	#	p[0] = threeAddressCode.get_value(p[3]) + p[5]
-	#elif p[4] = '+':
-	#	p[0] = threeAddressCode.get_value(p[3]) + p[5]
-	p[0] = p[3]
-	threeAddressCode.generate_icg('=', p[3], '', p[1])
+	p[1] = [p[1], ast.newLeaf(p[1])]
+	p[0] = [p[3][0], ast.newNode('=', p[3][1], p[1][1])]
+	threeAddressCode.generate_icg('=', p[3][0], '', p[1][0])
+	p[0][1].printAST()
 
 def p_Stmt(p):
 	'''Stmt : print_text SEMICOLON
@@ -120,47 +111,56 @@ def p_ellipsis(p):
 	
 def p_expression_plus(p):
 	'''expression : expression PLUS term'''
+	p[0] = [None, 0]
 	flag = True
-	if type(p[1]) == int and type(p[3]) == int:
+	if type(p[1][0]) == int and type(p[3][0]) == int:
 		flag = False
-		p[0] = p[1] + p[3]
-	threeAddressCode.generate_icg('+', p[1], p[3], p[0])
+		p[0][0] = p[1][0] + p[3][0]
+	threeAddressCode.generate_icg('+', p[1][0], p[3][0], p[0][0])
 	if flag:
-		p[0] = threeAddressCode.getLatestTemp()
+		p[0][0] = threeAddressCode.getLatestTemp()
+	p[0][1] = ast.newNode('+', p[1][1], p[3][1])
 
 def p_expression_minus(p):
 	'''expression : expression MINUS term'''
+	p[0] = [None, 0]
 	flag = True
-	if type(p[1]) == int and type(p[3]) == int:
+	if type(p[1][0]) == int and type(p[3][0]) == int:
 		flag = False
-		p[0] = p[1] - p[3]
-	threeAddressCode.generate_icg('-', p[1], p[3], p[0])
+		p[0][0] = p[1][0] - p[3][0]
+	threeAddressCode.generate_icg('-', p[1][0], p[3][0], p[0][0])
 	if flag:
-		p[0] = threeAddressCode.getLatestTemp()
+		p[0][0] = threeAddressCode.getLatestTemp()
+	p[0][1] = ast.newNode('-', p[1][1], p[3][1])
 
 def p_term_times(p):
 	'''term : term TIMES factor'''
+	p[0] = [None, 0]
 	flag = True
-	if type(p[1]) == int and type(p[3]) == int:
+	if type(p[1][0]) == int and type(p[3][0]) == int:
 		flag = False
-		p[0] = p[1] * p[3]
-	threeAddressCode.generate_icg('*', p[1], p[3], p[0])
+		p[0][0] = p[1][0] * p[3][0]
+	threeAddressCode.generate_icg('*', p[1][0], p[3][0], p[0][0])
 	if flag:
-		p[0] = threeAddressCode.getLatestTemp()
+		p[0][0] = threeAddressCode.getLatestTemp()
+	p[0][1] = ast.newNode('*', p[1][1], p[3][1])
 
 def p_term_div(p):
 	'''term : term DIVIDE factor'''
+	p[0] = [None, 0]
 	flag = True
-	if type(p[1]) == int and type(p[3]) == int:
+	if type(p[1][0]) == int and type(p[3][0]) == int:
 		flag = False
-		p[0] = p[1] / p[3]
-	threeAddressCode.generate_icg('/', p[1], p[3], p[0])
+		p[0][0] = p[1][0] / p[3][0]
+	threeAddressCode.generate_icg('/', p[1][0], p[3][0], p[0][0])
 	if flag:
-		p[0] = threeAddressCode.getLatestTemp()
+		p[0][0] = threeAddressCode.getLatestTemp()
+	p[0][1] = ast.newNode('/', p[1][1], p[3][1]) 
 
 def p_condition_equequ(p):
 	'''condition : term EQUALSEQUALS term'''
-	threeAddressCode.generate_icg("==F", p[1], p[3], "goto S")
+	p[0] = [None, ast.newNode('==', p[1][1], p[3][1])]
+	threeAddressCode.generate_icg("==F", p[1][0], p[3][0], "goto S")
 	#if p[1] == p[3]:
 	#	p[0] = "True"
 	#else:
@@ -168,7 +168,8 @@ def p_condition_equequ(p):
 
 def p_condition_notequ(p):
 	'''condition : term NOTEQUALS term'''
-	threeAddressCode.generate_icg("!=F", p[1], p[3], "goto S")
+	p[0] = [None, ast.newNode('!=', p[1][1], p[3][1])]
+	threeAddressCode.generate_icg("!=F", p[1][0], p[3][0], "goto S")
 	#if not p[1] == p[3]:
 	#	p[0] = "True"
 	#else:
@@ -176,7 +177,8 @@ def p_condition_notequ(p):
 
 def p_condition_gthanequ(p):
 	'''condition : term GTHANEQU term'''
-	threeAddressCode.generate_icg(">=F", p[1], p[3], "goto S")
+	p[0] = [None, ast.newNode('>=', p[1][1], p[3][1])]
+	threeAddressCode.generate_icg(">=F", p[1][0], p[3][0], "goto S")
 	#if p[1] >= p[3]:
 	#	p[0] = "True"
 	#else:
@@ -184,7 +186,8 @@ def p_condition_gthanequ(p):
 
 def p_condition_lthanequ(p):
 	'''condition : term LTHANEQU term'''
-	threeAddressCode.generate_icg("<=F", p[1], p[3], "goto S")
+	p[0] = [None, ast.newNode('<=', p[1][1], p[3][1])]
+	threeAddressCode.generate_icg("<=F", p[1][0], p[3][0], "goto S")
 	#if p[1] <= p[3]:
 	#	p[0] = "True"
 	#else:
@@ -192,7 +195,8 @@ def p_condition_lthanequ(p):
 
 def p_condition_lthan(p):
 	'''condition : term GTHAN term'''
-	threeAddressCode.generate_icg(">F", p[1], p[3], "goto S")
+	p[0] = [None, ast.newNode('>', p[1][1], p[3][1])]
+	threeAddressCode.generate_icg(">F", p[1][0], p[3][0], "goto S")
 	#if p[1] > p[3]:
 	#	p[0] = "True"
 	#else:
@@ -200,7 +204,8 @@ def p_condition_lthan(p):
 
 def p_condition_gthan(p):
 	'''condition : term LTHAN term'''
-	threeAddressCode.generate_icg("<F", p[1], p[3], "goto S")
+	p[0] = [None, ast.newNode('<', p[1][1], p[3][1])]
+	threeAddressCode.generate_icg("<F", p[1][0], p[3][0], "goto S")
 	#if p[1] < p[3]:
 	#	p[0] = "True"
 	#else:
@@ -218,6 +223,7 @@ def p_factor_num(p):
 	'''factor : NUMBER
 				| ID '''
 	p[0] = p[1]
+	p[0] = [p[1], ast.newLeaf(p[1])]
 
 def p_factor_expr(p):
 	'''factor : LPAREN expression RPAREN'''
