@@ -96,7 +96,7 @@ def p_if_cond(p):
 def p_loop(p):
 	'''loop : WHILE condition compoundStmt generateGotoLoop putLabelResult
 			| LOOP compoundStmt generateGotoLoop putLabelResult
-			| FOR ID IN ellipsis compoundStmt generateGotoLoop putLabelResult''' 
+			| FOR ID IN ellipsis compoundStmt generateGotoLoop putLabelResult loopEnd''' 
 	
 	if p[1] == 'while':
 		if p[2] == 'True':
@@ -108,10 +108,11 @@ def p_loop(p):
 		p[0] = p[2]
 
 	else:
-		p[0] = p[7]	
+		p[0] = p[5]	
 
 def p_ellipsis(p):
 	'''ellipsis : term DOTDOT term'''
+	threeAddressCode.loop_begin()
 	threeAddressCode.generate_icg("FOR", p[1], p[3], "goto S")
 	
 def p_expression_plus(p):
@@ -214,6 +215,11 @@ def p_generateGoto(p):
 def p_generateGotoLoop(p):
 	'''generateGotoLoop : empty'''
 	threeAddressCode.putLabel('loop')
+
+def p_loopEnd(p):
+	'''loopEnd : empty'''
+	threeAddressCode.loop_end()
+	threeAddressCode.generate_icg('','','','')
 
 # Error rule for syntax errors
 def p_error(p):

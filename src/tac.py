@@ -95,7 +95,7 @@ class ThreeAddressCode:
 			self.generateCode(operation, str(arg1), str(arg2), result)
 		
 		elif operation == "print":
-			self.generateCode("SWI 0X02", '', '', result.strip())
+			self.generateCode("SWI",'','', result)
 		
 		else:
 			print("Invalid operation")

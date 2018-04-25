@@ -15,9 +15,11 @@ data = '''
 fn main(){
 	a = 3+6;
 	for x in 1..4 {
-		x = 1+4;
 		print!("hello");
+		print!("world");
+		
 	}
+	b= 3+6;
 }
 /* Multiline Comments */
 /// Generate library docs for the following item.

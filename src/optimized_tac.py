@@ -1,7 +1,9 @@
 from symbol_table import table_stack
 tac_stack = table_stack()
 mult_flag = 0
+loop_values = []
 
+loop_unroll = False
 ad_hoc_constant_prop = {}
 
 class ThreeAddressCode:
@@ -11,6 +13,17 @@ class ThreeAddressCode:
 		self.tempVarCount = 1
 		self.label_counter = 1
 		self.temp_symbol_table = {}
+		self.loop_statement_count = 0
+		self.loop_staus = ''
+	
+	def loop_begin(self):
+		print('toogle beig')
+		self.loop_staus = 'begin'
+		
+	def loop_end(self):
+		print('toogle end')
+		
+		self.loop_staus = 'end'
 
 	def generateCode(self, operation, arg1, arg2, result):
 		code = Quadruple(operation, arg1, arg2, result)
@@ -25,6 +38,8 @@ class ThreeAddressCode:
 	def generate_icg(self, operation, arg1, arg2, result):
 		global ad_hoc_constant_prop
 		global mult_flag
+		global loop_unroll
+		
 		if operation == '+' or operation == '-':
 			if tac_stack.get_length() == 1:
 				if mult_flag == 1:
@@ -87,16 +102,40 @@ class ThreeAddressCode:
 			self.generateCode(operation, arg1, arg2, result)
 
 		elif operation == "FOR":
-			self.generateCode(operation, arg1, arg2, result)
-
+			print ("in for ", arg1, arg2)
+			if (int(arg2) - int(arg1) > 10 ):
+				self.generateCode(operation, arg1, arg2, result)
+			else:
+				
+				loop_unroll = True
+				loop_values.append(int(arg1))
+				loop_values.append(int(arg2))
+				
+				return
+				
 		elif operation.endswith('F'):
 			self.generateCode(operation, str(arg1), str(arg2), result)
 		
 		elif operation == "print":
-			self.generateCode("SWI 0X02", '', '', result.strip())	
+			self.generateCode("SWI", '', '', result)	
+		
+		if self.loop_staus == 'begin':
+			self.loop_statement_count +=1
+
+		elif self.loop_staus == 'end' and loop_unroll:
+			op = []
+			for i in range(self.loop_statement_count):
+				op.append (self.allCode.pop())
+			
+			for i in range (loop_values[0], loop_values[1]):
+				for j in op[1::-1]:
+					self.allCode.append(j)
+		
+			loop_unroll = False
+			self.loop_staus = ''
 		else:
 			print("Invalid operation")
-
+		
 	def putLabel(self, kind):
 		label = len(self.allCode)
 		if kind == 'result':
