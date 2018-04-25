@@ -6,7 +6,7 @@ import symbol_table		# Symbol Table File
 import parse_analysis
 from parse_analysis import threeAddressCode
 from parse_analysis import abstractSyntaxTree
-from tac import tac_stack
+from optimized_tac import tac_stack
 
 lexer = lex.lex(module=lex_analysis)
 
@@ -84,4 +84,5 @@ while True:
 	print(result)
 	# Only for testing:
 	threeAddressCode.print_code()
-	abstractSyntaxTree.printAST()	
+	abstractSyntaxTree.printAST()
+	#print(threeAddressCode.temp_symbol_table)

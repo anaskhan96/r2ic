@@ -1,6 +1,6 @@
 import ply.yacc as yacc
 from lex_analysis import tokens
-from tac import ThreeAddressCode
+from optimized_tac import ThreeAddressCode
 from ast import AbstractSyntaxTree
 
 threeAddressCode = ThreeAddressCode()
