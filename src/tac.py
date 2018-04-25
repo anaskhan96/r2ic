@@ -57,17 +57,10 @@ class ThreeAddressCode:
 			#self.tempVarCount += 1
 		
 			if tac_stack.get_length() == 1:
-				print(1)
-				if mult_flag == 2:
-					print("a")
+				if mult_flag == 1:
 					self.generateCode(operation, str(arg2), str(tac_stack.pop()), 't'+str(self.tempVarCount))
-
-				elif mult_flag == 1:
-					print("a")
-					self.generateCode(operation, str(arg2), str(arg1), 't'+str(self.tempVarCount))
 				else:
-					print("b")
-					mult_flag -= 1
+					mult_flag -= 
 					self.generateCode(operation, str(arg1), str(arg2), 't'+str(self.tempVarCount))
 
 				tac_stack.push('t'+str(self.tempVarCount))
@@ -75,7 +68,6 @@ class ThreeAddressCode:
 				self.tempVarCount += 1
 
 			elif tac_stack.get_length() > 1:
-				print(2)
 				self.generateCode(operation, str(tac_stack.pop()), str(tac_stack.pop()), 't'+str(self.tempVarCount))
 				tac_stack.push('t'+str(self.tempVarCount))
 				# add 't'+str(self.tempVarCount) to symbol_table
@@ -83,7 +75,6 @@ class ThreeAddressCode:
 				mult_flag -= 1
 			
 			else:
-				print(3)
 				self.generateCode(operation, str(arg1), str(arg2), 't'+str(self.tempVarCount))
 				tac_stack.push('t'+str(self.tempVarCount))
 				mult_flag += 1
