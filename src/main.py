@@ -14,10 +14,11 @@ data = '''
 // Single Comment
 fn main(){
 	let a = 3 + 4 * 9;
-	for x in 1..6 {
+	for x in 1..4 {
 	print!("hello");	
 	print!("world");
-	let b = 3+5;
+	let b = a+5;
+	let f  = d + a;
 	
 	}
 }

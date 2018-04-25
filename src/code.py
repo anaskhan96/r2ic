@@ -75,16 +75,18 @@ class ThreeAddressCode:
 		elif operation == 'loop-end' and self.loop_unroll:
 			op =[]
 			temp = []
-			for i in range(self.loop_statement_count -2):
+			for i in range(self.loop_statement_count -1):
 				op.append(self.allCode.pop())
 			for i in range(self.loop_values[0], self.loop_values[1]):
 				for j in op[::-1]:
-					if(j.operation != '='):
+					if(j.operation not in  ['=','-','+', '*','/']):
 					
 						self.allCode.append(j)
 					else:
-						temp.append(j)
-			self.allCode += list(set(temp)) 
+						if j not in temp:
+							temp.append(j)
+
+			self.allCode += (temp)
 			self.loop_values = []
 			self.loop_status = ''
 			self.loop_unroll = False
