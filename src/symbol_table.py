@@ -1,4 +1,5 @@
 import re
+scopes = {'if':0, 'else': 0, 'while': 0, 'for':0, 'loop':0} 
 
 class table_stack:
 	def __init__(self):
@@ -57,16 +58,13 @@ class symbol_table:
 			self.children[i].print_table()	
 
 
-def find_most_recent_scope(scope_name, symtab):
-	pattern = re.compile("{}\d+".format(scope_name))
-	key_digits = []
-	for key in symtab.children:
-		if pattern.match(key):
-			key_digits.append(int(key[-1]))
-	if len(key_digits) == 0:
+def find_most_recent_scope(scope_name):
+	global scopes
+	if scope_name not in scopes.keys():
 		return 0
-	else:
-		return max(key_digits)
+	digit = scopes[scope_name]
+	scopes[scope_name] += 1
+	return digit
 
 	
 		

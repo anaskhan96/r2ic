@@ -10,10 +10,14 @@ from optimized_tac import tac_stack
 
 
 lexer = lex.lex(module=lex_analysis)
-
-fp = open('./test-cases/case'+ sys.argv[1]+ '.txt')
+if sys.argv[1] == None :
+	fp = open('./test-cases/case1.txt')
+	
+else:
+	fp = open('./test-cases/case'+ sys.argv[1]+ '.txt')
 data = fp.read()
 fp.close()
+
 lexer.input(data)
 global_symtab = symbol_table.symbol_table("global", "global")
 stack = symbol_table.table_stack()
@@ -46,7 +50,7 @@ for tok in lexer:
 			scope_name = 'while'
 		elif 'loop' in items:
 			scope_name = 'loop'
-		digit = symbol_table.find_most_recent_scope(scope_name, symtab)
+		digit = symbol_table.find_most_recent_scope(scope_name)
 		scope_name = ''.join([scope_name, str(digit+1)])
 		new_symtab = symbol_table.symbol_table(scope_name, symtab)
 		stack.push(new_symtab)
