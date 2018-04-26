@@ -14,15 +14,10 @@ data = '''
 // Single Comment
 fn main(){
 	let a = 3 + 4 * 9;
-	for x in 1..4 {
-	print!("hello");	
-	print!("world");
-	let b = a+5;
-	let f  = d + a;
-	
-	}
 	while a < 2 {
-		let a = 5;
+		while b < 5 {
+			let a = 5;
+		}
 	}
 	let b = 2 + c + 5 * 2;
 	let d = a;
@@ -63,7 +58,7 @@ for tok in lexer:
 			scope_name = 'while'
 		elif 'loop' in items:
 			scope_name = 'loop'
-		digit = symbol_table.find_most_recent_scope(scope_name, symtab)
+		digit = symbol_table.find_most_recent_scope(scope_name)
 		scope_name = ''.join([scope_name, str(digit+1)])
 		new_symtab = symbol_table.symbol_table(scope_name, symtab)
 		stack.push(new_symtab)
