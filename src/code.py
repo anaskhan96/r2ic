@@ -61,8 +61,41 @@ class ThreeAddressCode:
 			else:
 				self.tempVarCount += 1
 				temp = 't'+str(self.tempVarCount)
-				self.generateCode(operation, arg1, arg2, temp)
-				self.symbolTable.insert(temp, [0, 'ID', '~', "global", "-"])
+				if type(arg1) == str and type(arg2) == int:
+					val = self.symbolTable.lookup(arg1)[2]
+					if val != '~':
+						res = 0
+						if operation == '+':
+							res = val + arg2
+						elif operation == '-':
+							res = val - arg2
+						elif operation == '*':
+							res = val * arg2
+						elif operation == '/':
+							res = val / arg2
+						self.symbolTable.insert(temp, [0, 'ID', res, "global", "-"])
+					else:
+						self.generateCode(operation, arg1, arg2, temp)
+						self.symbolTable.insert(temp, [0, 'ID', '~', "global", "-"])
+				elif type(arg1) == int and type(arg2) == str:
+					val = self.symbolTable.lookup(arg2)[2]
+					if val != '~':
+						res = 0
+						if operation == '+':
+							res = arg1 + val
+						elif operation == '-':
+							res = arg1 - val
+						elif operation == '*':
+							res = arg1 * val
+						elif operation == '/':
+							res = arg1 / val
+						self.symbolTable.insert(temp, [0, 'ID', res, "global", "-"])
+					else:
+						self.generateCode(operation, arg1, arg2, temp)
+						self.symbolTable.insert(temp, [0, 'ID', '~', "global", "-"])
+				else:
+					self.generateCode(operation, arg1, arg2, temp)
+					self.symbolTable.insert(temp, [0, 'ID', '~', "global", "-"])
 		
 		elif operation == 'FOR':
 			if (int(arg2) - int(arg1) > 10 ):
