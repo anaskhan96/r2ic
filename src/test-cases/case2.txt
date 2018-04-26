@@ -1,0 +1,11 @@
+fn main(){
+	let a = 3 + 4 * 9;
+    while 1 < 4 {
+        let  b = 3 + a;
+        if b > 10{
+            let a = 1;
+            print!("TRUE");
+            c =  3 + 5*4 - a;
+        }       
+    }
+}

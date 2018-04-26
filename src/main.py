@@ -8,24 +8,12 @@ from parse_analysis import threeAddressCode
 from parse_analysis import abstractSyntaxTree
 from optimized_tac import tac_stack
 
+
 lexer = lex.lex(module=lex_analysis)
 
-data = '''
-// Single Comment
-fn main(){
-	let a = 3 + 4 * 9;
-	for x in 1..4 {
-	print!("hello");	
-	print!("world");
-	let b = a+5;
-	let f  = d + a;
-	
-	}
-}
-/* Multiline Comments */
-/// Generate library docs for the following item.
-//! Generate library docs for the enclosing item.
-'''
+fp = open('./test-cases/case'+ sys.argv[1]+ '.txt')
+data = fp.read()
+fp.close()
 lexer.input(data)
 global_symtab = symbol_table.symbol_table("global", "global")
 stack = symbol_table.table_stack()

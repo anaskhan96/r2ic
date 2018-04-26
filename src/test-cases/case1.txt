@@ -1,0 +1,15 @@
+//Single Comment
+fn main(){
+	let a = 3 + 4 * 9;
+	for x in 1..4 {
+	print!("hello");	
+	print!("world");
+	let b = a+5;
+	let f  = d + a;
+	
+	}
+}
+/* Multiline Comments */
+/// Generate library docs for the following item.
+//! Generate library docs for the enclosing item.
+
