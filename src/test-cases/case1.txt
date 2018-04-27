@@ -2,12 +2,10 @@
 fn main(){
 	let a = 3 + 4 * 9;
 	for x in 1..4 {
-	print!("hello");	
-	print!("world");
-	let b = a+5;
-	let f  = d + a;
-	
+		print!("hello");	
+		print!("world");
 	}
+	let b = a + 4;
 }
 /* Multiline Comments */
 /// Generate library docs for the following item.

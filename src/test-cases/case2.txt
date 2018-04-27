@@ -1,15 +1,15 @@
 fn main(){
 	let a = 3 + 4 * 9;
 	let f = a + 1;
-    while 1 < 4 {
-        let  b = 3 + a;
-        if b > 10{
-		while a < 5 {
-			print!("hey");
-		}
-            let a = 1;
-            print!("TRUE");
-            c = 3 + 4*5 - a;
-        }       
-    }
+        while 1 < 4 {
+        	let  b = 3 + a;
+        	if b > 10{
+			while a < 5 {
+				print!("hey");
+			}
+			let a = 1;
+			print!("TRUE");
+			c = 3 + 4*5 - a;
+        	}       
+	    }
 }
