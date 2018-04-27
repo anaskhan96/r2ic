@@ -1,12 +1,10 @@
 import ply.yacc as yacc
 from lex_analysis import tokens
 from code import ThreeAddressCode
-from ast import AbstractSyntaxTree
 import symbol_table
 import ast
 
 threeAddressCode = ThreeAddressCode()
-abstractSyntaxTree = AbstractSyntaxTree('root', None, None)
 symbolTable = symbol_table.symbol_table('global', 'global')
 scope_name = "1"
 scopes = {'if':0, 'else': 0, 'while': 0, 'for':0, 'loop':0} 
@@ -85,7 +83,6 @@ def p_if_cond(p):
 	if p[2] == "True":
 		p[0] = p[3]
 	else:
-		print("Condition failed!")
 		pass
 
 def p_loop(p):
@@ -103,11 +100,10 @@ def p_loop(p):
 	else:
 		p[0] = p[5]
 
-
 def p_ellipsis(p):
 	'''ellipsis : term DOTDOT term '''
 	threeAddressCode.loop_begin()
-	threeAddressCode.generate_icg("FOR",p[1][0], p[3][0], "goto S")
+	threeAddressCode.generate_icg("FOR", p[1][0], p[3][0], "goto S")
 	
 def p_expression_plus(p):
 	'''expression : expression PLUS term'''
@@ -161,55 +157,31 @@ def p_condition_equequ(p):
 	'''condition : term EQUALSEQUALS term'''
 	p[0] = [None, ast.newNode('==', p[1][1], p[3][1])]
 	threeAddressCode.generate_icg("==F", p[1][0], p[3][0], "goto S")
-	#if p[1] == p[3]:
-	#	p[0] = "True"
-	#else:
-	#	p[0] = "False"
 
 def p_condition_notequ(p):
 	'''condition : term NOTEQUALS term'''
 	p[0] = [None, ast.newNode('!=', p[1][1], p[3][1])]
 	threeAddressCode.generate_icg("!=F", p[1][0], p[3][0], "goto S")
-	#if not p[1] == p[3]:
-	#	p[0] = "True"
-	#else:
-	#	p[0] = "False"
 
 def p_condition_gthanequ(p):
 	'''condition : term GTHANEQU term'''
 	p[0] = [None, ast.newNode('>=', p[1][1], p[3][1])]
 	threeAddressCode.generate_icg(">=F", p[1][0], p[3][0], "goto S")
-	#if p[1] >= p[3]:
-	#	p[0] = "True"
-	#else:
-	#	p[0] = "False"
 
 def p_condition_lthanequ(p):
 	'''condition : term LTHANEQU term'''
 	p[0] = [None, ast.newNode('<=', p[1][1], p[3][1])]
 	threeAddressCode.generate_icg("<=F", p[1][0], p[3][0], "goto S")
-	#if p[1] <= p[3]:
-	#	p[0] = "True"
-	#else:
-	#	p[0] = "False"
 
 def p_condition_lthan(p):
 	'''condition : term GTHAN term'''
 	p[0] = [None, ast.newNode('>', p[1][1], p[3][1])]
 	threeAddressCode.generate_icg(">F", p[1][0], p[3][0], "goto S")
-	#if p[1] > p[3]:
-	#	p[0] = "True"
-	#else:
-	#	p[0] = "False"
 
 def p_condition_gthan(p):
 	'''condition : term LTHAN term'''
 	p[0] = [None, ast.newNode('<', p[1][1], p[3][1])]
 	threeAddressCode.generate_icg("<F", p[1][0], p[3][0], "goto S")
-	#if p[1] < p[3]:
-	#	p[0] = "True"
-	#else:
-	#	p[0] = "False"
 
 def p_expression_term(p):
 	'expression : term'
@@ -305,3 +277,4 @@ def p_error(p):
 def p_empty(p):
 	'empty : '
 	pass
+	

@@ -57,7 +57,6 @@ class symbol_table:
 		for i in self.children:
 			self.children[i].print_table()	
 
-
 def find_most_recent_scope(scope_name):
 	global scopes
 	if scope_name not in scopes.keys():
@@ -65,6 +64,3 @@ def find_most_recent_scope(scope_name):
 	digit = scopes[scope_name]
 	scopes[scope_name] += 1
 	return digit
-
-	
-		

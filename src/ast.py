@@ -23,3 +23,4 @@ def newNode(value, left, right):
 
 def newLeaf(value):
 	return AbstractSyntaxTree(value, None, None)
+	

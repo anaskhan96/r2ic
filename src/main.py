@@ -7,11 +7,10 @@ import parse_analysis
 from parse_analysis import threeAddressCode
 from parse_analysis import abstractSyntaxTree
 
-
 lexer = lex.lex(module=lex_analysis)
+
 if sys.argv[1] == None :
 	fp = open('./test-cases/case1.txt')
-	
 else:
 	fp = open('./test-cases/case'+ sys.argv[1]+ '.txt')
 data = fp.read()
@@ -24,7 +23,6 @@ stack.push(global_symtab)
 linecount, items = 0, []
 
 for tok in lexer:
-	# print(tok)
 	if(tok.lineno == linecount):
 		items.append(tok.value)
 	else:
@@ -53,8 +51,6 @@ for tok in lexer:
 		scope_name = ''.join([scope_name, str(digit+1)])
 		new_symtab = symbol_table.symbol_table(scope_name, symtab)
 		stack.push(new_symtab)
-		# print("Addded new symbol table", scope_name)
-
 	elif(tok.type == 'RBRACE'):
 		child_symtab = stack.pop()
 		symtab = stack.peek()
@@ -65,7 +61,5 @@ parser = yacc.yacc(module=parse_analysis)
 final_sym.print_table()
 threeAddressCode.symbolTable = final_sym
 parse_analysis.initSymbolTable(final_sym)
-result = parser.parse(data)
-print(result)
+parser.parse(data)
 threeAddressCode.print_code()
-abstractSyntaxTree.printAST()

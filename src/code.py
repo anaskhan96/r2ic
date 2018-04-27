@@ -1,4 +1,3 @@
-
 class ThreeAddressCode:
 	def __init__(self):
 		self.symbolTable = None
@@ -118,7 +117,6 @@ class ThreeAddressCode:
 					else:
 						if j not in temp:
 							temp.append(j)
-
 			self.allCode += (temp)
 			self.loop_values = []
 			self.loop_status = ''
@@ -155,3 +153,4 @@ class Quadruple:
 
 	def print_quadruple(self):
 		print(self.operation, self.arg1, self.arg2, self.result)
+		
