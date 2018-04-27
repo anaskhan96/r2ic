@@ -6,7 +6,6 @@ import symbol_table		# Symbol Table File
 import parse_analysis
 from parse_analysis import threeAddressCode
 from parse_analysis import abstractSyntaxTree
-from optimized_tac import tac_stack
 
 
 lexer = lex.lex(module=lex_analysis)
