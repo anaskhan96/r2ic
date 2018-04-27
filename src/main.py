@@ -5,7 +5,6 @@ import sys				# Python sys
 import symbol_table		# Symbol Table File
 import parse_analysis
 from parse_analysis import threeAddressCode
-from parse_analysis import abstractSyntaxTree
 
 lexer = lex.lex(module=lex_analysis)
 
