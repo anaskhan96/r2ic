@@ -14,3 +14,5 @@ Test cases can be added inside `src/test-cases` with the format specified. The t
 cd src
 python3 main.py 2
 ```
+---
+This project was built under the course *Compiler Design Laboratory* in *PES University*.
